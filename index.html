@@ -3,14 +3,54 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Emil Saga – Emil der Todesengel</title>
-  <meta name="description" content="Emil der Todesengel – Der Auftakt einer düsteren Fantasy-Trilogie von Daniele Mele. Jetzt erhältlich." />
-  <script src="https://cdn.tailwindcss.com"></script>
+  <title>Emil Saga – Emil der Todesengel | Fantasy-Trilogie von Daniele Mele</title>
+  <meta name="description" content="Emil der Todesengel – Der Auftakt einer düsteren Fantasy-Trilogie von Daniele Mele. Entdecke die Welt von Emil, erkunde die interaktive Karte und tauche ein in eine epische Geschichte. Jetzt erhältlich." />
+  <meta name="keywords" content="Emil Saga, Emil der Todesengel, Daniele Mele, Fantasy, Trilogie, Buch, Roman, Riverfield Verlag" />
+  <meta name="author" content="Daniele Mele" />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://www.emilsaga.com/" />
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Emil Saga – Emil der Todesengel" />
+  <meta property="og:description" content="Der Auftakt einer düsteren Fantasy-Trilogie von Daniele Mele. Jetzt erhältlich." />
+  <meta property="og:image" content="https://www.emilsaga.com/book/DM_Cover_FINAL.webp" />
+  <meta property="og:url" content="https://www.emilsaga.com/" />
+  <meta property="og:locale" content="de_CH" />
+  <meta property="og:site_name" content="Emil Saga" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Emil Saga – Emil der Todesengel" />
+  <meta name="twitter:description" content="Der Auftakt einer düsteren Fantasy-Trilogie von Daniele Mele." />
+  <meta name="twitter:image" content="https://www.emilsaga.com/book/DM_Cover_FINAL.webp" />
+
+  <!-- Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Book",
+    "name": "Emil der Todesengel",
+    "author": { "@type": "Person", "name": "Daniele Mele" },
+    "bookFormat": "Paperback",
+    "inLanguage": "de",
+    "publisher": { "@type": "Organization", "name": "Riverfield Verlag" },
+    "image": "https://www.emilsaga.com/book/DM_Cover_FINAL.webp",
+    "description": "Der Auftakt einer düsteren Fantasy-Trilogie von Daniele Mele.",
+    "genre": "Fantasy",
+    "numberOfPages": 0,
+    "isbn": "9783907459461"
+  }
+  </script>
+
+  <!-- Anti-flicker: paint dark background immediately -->
+  <style>html{background:#060d0b}</style>
+
+  <!-- Fonts: preconnect + non-render-blocking load -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Cinzel:wght@400;500;600;700;900&family=Cormorant+SC:wght@300;400;500;600;700&family=Crimson+Text:ital,wght@0,400;0,600;1,400;1,600&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Cinzel:wght@400;500;600;700;900&family=Cormorant+SC:wght@300;400;500;600;700&family=Crimson+Text:ital,wght@0,400;0,600;1,400;1,600&display=swap" onload="this.onload=null;this.rel='stylesheet'" />
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Cinzel:wght@400;500;600;700;900&family=Cormorant+SC:wght@300;400;500;600;700&family=Crimson+Text:ital,wght@0,400;0,600;1,400;1,600&display=swap" rel="stylesheet" /></noscript>
 
   <style>
     :root {
@@ -74,7 +114,7 @@
           rgba(6,13,11,0.0) 90%,
           var(--dark-0) 100%
         ),
-        url('book/emil_back_def_1.png') right 16% / auto 100% no-repeat,
+        url('book/emil_back_def_1.webp') right 16% / auto 100% no-repeat,
         var(--dark-0);
     }
 
@@ -1882,19 +1922,6 @@
     }
   </style>
 
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            gold: '#c9a84c',
-            'gold-light': '#e8c96a',
-            dark: '#060d0b',
-          }
-        }
-      }
-    }
-  </script>
 </head>
 <body>
 
@@ -1934,7 +1961,7 @@
       <div class="book-widget">
         <div class="book-inner">
           <div class="book-front">
-            <img src="book/DM_Cover_FINAL.jpg" alt="Emil der Todesengel – Buchcover" />
+            <img src="book/DM_Cover_FINAL.webp" alt="Emil der Todesengel – Buchcover" />
             <div class="book-bind-top"></div>
             <div class="book-texture"></div>
           </div>
@@ -1999,7 +2026,7 @@
 
       <div class="desc-grid fade-in-stagger fade-in">
         <div class="inspiration-card inspiration-card--bg-icon">
-          <img src="book/darth_vader.png" alt="" class="card-bg-icon" />
+          <img src="book/darth_vader.webp" alt="" class="card-bg-icon" loading="lazy" />
           <h3>
             Star Wars
           </h3>
@@ -2010,7 +2037,7 @@
         </div>
 
         <div class="inspiration-card inspiration-card--bg-icon">
-          <img src="book/sauron.png" alt="" class="card-bg-icon" />
+          <img src="book/sauron.webp" alt="" class="card-bg-icon" loading="lazy" />
           <h3>
             Herr der Ringe
           </h3>
@@ -2022,7 +2049,7 @@
         </div>
 
         <div class="inspiration-card inspiration-card--bg-icon">
-          <img src="book/lute.png" alt="" class="card-bg-icon" />
+          <img src="book/lute.webp" alt="" class="card-bg-icon" loading="lazy" />
           <h3>
             Der Name des Windes
           </h3>
@@ -2032,7 +2059,7 @@
         </div>
 
         <div class="inspiration-card inspiration-card--bg-icon">
-          <img src="book/dagger.png" alt="" class="card-bg-icon" />
+          <img src="book/dagger.webp" alt="" class="card-bg-icon" loading="lazy" />
           <h3>
             Die Emil Saga
           </h3>
@@ -2079,9 +2106,10 @@
       <div class="autor-inner fade-in">
         <div class="autor-image-wrap">
           <img
-            src="book/foto_autor.jpg"
+            src="book/foto_autor.webp"
             alt="Daniele Mele – Autor"
             class="autor-photo"
+            loading="lazy"
           />
         </div>
 
@@ -2103,9 +2131,9 @@
           </p>
 
           <div class="autor-badge-wrap">
-            <div class="autor-badge"><img src="book/landscape_ch.png" alt="" style="width:16px;height:16px;filter:invert(73%) sepia(50%) saturate(400%) hue-rotate(5deg) brightness(90%);vertical-align:middle;margin-right:4px;">Zürich, Schweiz</div>
-            <div class="autor-badge"><img src="book/train.png" alt="" style="width:16px;height:16px;filter:invert(73%) sepia(50%) saturate(400%) hue-rotate(5deg) brightness(90%);vertical-align:middle;margin-right:4px;">Lokführer & Autor</div>
-            <div class="autor-badge"><img src="book/book.png" alt="" style="width:16px;height:16px;filter:invert(73%) sepia(50%) saturate(400%) hue-rotate(5deg) brightness(90%);vertical-align:middle;margin-right:4px;">Fantasy-Trilogie</div>
+            <div class="autor-badge"><img src="book/landscape_ch.webp" alt="" style="width:16px;height:16px;filter:invert(73%) sepia(50%) saturate(400%) hue-rotate(5deg) brightness(90%);vertical-align:middle;margin-right:4px;">Zürich, Schweiz</div>
+            <div class="autor-badge"><img src="book/train.webp" alt="" style="width:16px;height:16px;filter:invert(73%) sepia(50%) saturate(400%) hue-rotate(5deg) brightness(90%);vertical-align:middle;margin-right:4px;">Lokführer & Autor</div>
+            <div class="autor-badge"><img src="book/book.webp" alt="" style="width:16px;height:16px;filter:invert(73%) sepia(50%) saturate(400%) hue-rotate(5deg) brightness(90%);vertical-align:middle;margin-right:4px;">Fantasy-Trilogie</div>
             <div class="autor-badge">✦ Riverfield Verlag</div>
           </div>
 
@@ -2150,7 +2178,7 @@
         <!-- Book 1 – Finished -->
         <div class="trilogy-card trilogy-card--finished">
           <div class="trilogy-cover-wrap">
-            <img src="book/DM_Cover_FINAL.jpg" alt="Emil der Todesengel – Cover" />
+            <img src="book/DM_Cover_FINAL.webp" alt="Emil der Todesengel – Cover" loading="lazy" />
           </div>
           <p class="trilogy-number">Buch I</p>
           <h3 class="trilogy-title">Emil der Todesengel</h3>
@@ -2227,38 +2255,38 @@
         <!-- Orell Füssli -->
         <a href="https://www.orellfuessli.ch/shop/home/artikeldetails/A1078077223" target="_blank" rel="noopener noreferrer" class="shop-card">
 
-          <div class="shop-thumb"><img src="book/DM_Cover_FINAL.jpg" alt="Cover" /></div>
+          <div class="shop-thumb"><img src="book/DM_Cover_FINAL.webp" alt="Cover" loading="lazy" /></div>
           <div class="shop-info">
             <div class="shop-name">Orell Füssli</div>
-            <div class="shop-meta"><span class="shop-flag"><img src="book/landscape_ch.png" alt="CH" style="width:14px;height:14px;filter:invert(73%) sepia(50%) saturate(400%) hue-rotate(5deg) brightness(90%);"></span><span class="shop-country">Schweiz</span></div>
+            <div class="shop-meta"><span class="shop-flag"><img src="book/landscape_ch.webp" alt="CH" style="width:14px;height:14px;filter:invert(73%) sepia(50%) saturate(400%) hue-rotate(5deg) brightness(90%);"></span><span class="shop-country">Schweiz</span></div>
           </div>
           <span class="shop-arrow">→</span>
         </a>
 
         <a href="https://www.exlibris.ch/de/buecher-buch/deutschsprachige-buecher/daniele-mele/emil-der-todesengel/id/9783907459461/" target="_blank" rel="noopener noreferrer" class="shop-card">
 
-          <div class="shop-thumb"><img src="book/DM_Cover_FINAL.jpg" alt="Cover" /></div>
+          <div class="shop-thumb"><img src="book/DM_Cover_FINAL.webp" alt="Cover" loading="lazy" /></div>
           <div class="shop-info">
             <div class="shop-name">Ex Libris</div>
-            <div class="shop-meta"><span class="shop-flag"><img src="book/landscape_ch.png" alt="CH" style="width:14px;height:14px;filter:invert(73%) sepia(50%) saturate(400%) hue-rotate(5deg) brightness(90%);"></span><span class="shop-country">Schweiz</span></div>
+            <div class="shop-meta"><span class="shop-flag"><img src="book/landscape_ch.webp" alt="CH" style="width:14px;height:14px;filter:invert(73%) sepia(50%) saturate(400%) hue-rotate(5deg) brightness(90%);"></span><span class="shop-country">Schweiz</span></div>
           </div>
           <span class="shop-arrow">→</span>
         </a>
 
         <a href="https://www.thalia.de" target="_blank" rel="noopener noreferrer" class="shop-card">
-          <div class="shop-thumb"><img src="book/DM_Cover_FINAL.jpg" alt="Cover" /></div>
+          <div class="shop-thumb"><img src="book/DM_Cover_FINAL.webp" alt="Cover" loading="lazy" /></div>
           <div class="shop-info">
             <div class="shop-name">Thalia</div>
-            <div class="shop-meta"><span class="shop-flag"><img src="book/germany.png" alt="DE" style="width:14px;height:14px;filter:invert(73%) sepia(50%) saturate(400%) hue-rotate(5deg) brightness(90%);"></span><span class="shop-country">Deutschland</span></div>
+            <div class="shop-meta"><span class="shop-flag"><img src="book/germany.webp" alt="DE" style="width:14px;height:14px;filter:invert(73%) sepia(50%) saturate(400%) hue-rotate(5deg) brightness(90%);"></span><span class="shop-country">Deutschland</span></div>
           </div>
           <span class="shop-arrow">→</span>
         </a>
 
         <a href="https://www.amazon.de/-/en/Emil-Todesengel-Daniele-Mele/dp/3907459466/" target="_blank" rel="noopener noreferrer" class="shop-card">
-          <div class="shop-thumb"><img src="book/DM_Cover_FINAL.jpg" alt="Cover" /></div>
+          <div class="shop-thumb"><img src="book/DM_Cover_FINAL.webp" alt="Cover" loading="lazy" /></div>
           <div class="shop-info">
             <div class="shop-name">Amazon</div>
-            <div class="shop-meta"><span class="shop-flag"><img src="book/germany.png" alt="DE" style="width:14px;height:14px;filter:invert(73%) sepia(50%) saturate(400%) hue-rotate(5deg) brightness(90%);"></span><span class="shop-country">Deutschland</span></div>
+            <div class="shop-meta"><span class="shop-flag"><img src="book/germany.webp" alt="DE" style="width:14px;height:14px;filter:invert(73%) sepia(50%) saturate(400%) hue-rotate(5deg) brightness(90%);"></span><span class="shop-country">Deutschland</span></div>
           </div>
           <span class="shop-arrow">→</span>
         </a>
@@ -2334,7 +2362,6 @@
 
       <h3>5. Externe Dienste</h3>
       <p><strong>Leaflet / unpkg:</strong> Für die interaktive Karte wird die Bibliothek Leaflet über unpkg.com geladen. Dabei kann eine Verbindung zu den Servern von unpkg hergestellt werden.</p>
-      <p><strong>Tailwind CSS:</strong> Das CSS-Framework wird über cdn.tailwindcss.com geladen, wobei eine Verbindung zu Cloudflare-Servern hergestellt wird.</p>
 
       <h3>6. Kontaktformular</h3>
       <p>Wenn du das Kontaktformular nutzt, werden deine Angaben (Vorname, Nachname, E-Mail, Nachricht) über den Dienst <strong>FormSubmit.co</strong> an die E-Mail-Adresse des Autors weitergeleitet. FormSubmit speichert die Daten temporär zur Zustellung. Es gelten die <a href="https://formsubmit.co/privacy.pdf" target="_blank" rel="noopener noreferrer">Datenschutzbestimmungen von FormSubmit</a>.</p>
@@ -2534,8 +2561,8 @@
     if (tagline) tagline.classList.add('visible-tagline');
   }, 1200);
 
-  // ── LEAFLET MAP ─────────────────────────────────────
-  (function() {
+  // ── LEAFLET MAP (lazy-loaded) ───────────────────────
+  function initMap() {
     const W = 1494, H = 1106;
     const bounds = [[0, 0], [H, W]];
 
@@ -2553,7 +2580,7 @@
       maxBoundsViscosity: 1.0,
     });
 
-    L.imageOverlay('book/karte.png', bounds, {
+    L.imageOverlay('book/karte.webp', bounds, {
       opacity: 1,
       interactive: false,
     }).addTo(map);
@@ -2789,7 +2816,25 @@
       resize();
       requestAnimationFrame(loop);
     })();
-  })();
+  }
+
+  // ── LAZY-LOAD LEAFLET ──────────────────────────────
+  const mapObserver = new IntersectionObserver((entries) => {
+    if (entries[0].isIntersecting) {
+      mapObserver.disconnect();
+      const link = document.createElement('link');
+      link.rel = 'stylesheet';
+      link.href = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css';
+      document.head.appendChild(link);
+
+      const script = document.createElement('script');
+      script.src = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js';
+      script.onload = initMap;
+      document.body.appendChild(script);
+    }
+  }, { rootMargin: '200px' });
+  mapObserver.observe(document.getElementById('map-section'));
+
   </script>
 
   <script defer src="/_vercel/insights/script.js"></script>
