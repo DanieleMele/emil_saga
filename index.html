@@ -2325,17 +2325,21 @@
     nav.classList.toggle('scrolled', window.scrollY > 60);
   }, { passive: true });
 
-  mobileToggle.addEventListener('click', () => {
+  function openMenu() {
     navLinks.classList.add('open');
-  });
-
-  mobileClose.addEventListener('click', () => {
+    nav.style.zIndex = '9999';
+  }
+  function closeMenu() {
     navLinks.classList.remove('open');
-  });
+    nav.style.zIndex = '';
+  }
+
+  mobileToggle.addEventListener('click', openMenu);
+  mobileClose.addEventListener('click', closeMenu);
 
   navLinks.querySelectorAll('a').forEach(a => {
     a.addEventListener('click', () => {
-      navLinks.classList.remove('open');
+      closeMenu();
     });
   });
 
