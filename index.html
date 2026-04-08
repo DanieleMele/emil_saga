@@ -1603,6 +1603,75 @@
 
     .kontakt-success.show { display: block; }
 
+    /* ── DATENSCHUTZ SECTION ──────────────────────── */
+    #datenschutz {
+      padding: 6rem 1.5rem;
+      background: var(--dark-0);
+      display: none;
+    }
+
+    #datenschutz.visible { display: block; }
+
+    .datenschutz-container {
+      max-width: 720px;
+      margin: 0 auto;
+    }
+
+    .datenschutz-container h3 {
+      font-family: 'Cinzel', serif;
+      font-size: 1rem;
+      color: var(--gold);
+      margin: 2rem 0 0.5rem;
+      letter-spacing: 0.04em;
+    }
+
+    .datenschutz-container p,
+    .datenschutz-container ul {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      line-height: 1.7;
+      margin-bottom: 0.75rem;
+    }
+
+    .datenschutz-container ul {
+      padding-left: 1.5rem;
+      list-style: disc;
+    }
+
+    .datenschutz-container a {
+      color: var(--gold-dim);
+      text-decoration: underline;
+      transition: color 0.2s ease;
+    }
+
+    .datenschutz-container a:hover { color: var(--gold-light); }
+
+    .datenschutz-close {
+      display: inline-block;
+      margin-top: 2rem;
+      padding: 0.6rem 1.8rem;
+      font-family: 'Cinzel', serif;
+      font-size: 0.75rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--gold);
+      border: 1px solid rgba(201,168,76,0.3);
+      background: none;
+      cursor: pointer;
+      transition: background 0.2s ease, border-color 0.2s ease;
+    }
+
+    .datenschutz-close:hover {
+      background: rgba(201,168,76,0.08);
+      border-color: rgba(201,168,76,0.5);
+    }
+
+    .datenschutz-close:focus-visible {
+      outline: 2px solid var(--gold-light);
+      outline-offset: 3px;
+    }
+
     /* ── FOOTER ────────────────────────────────────── */
     footer {
       padding: 4rem 1.5rem 3rem;
@@ -2242,6 +2311,47 @@
     </div>
   </section>
 
+  <!-- ── DATENSCHUTZ ────────────────────────────────── -->
+  <section id="datenschutz">
+    <div class="datenschutz-container">
+      <div class="section-header">
+        <p class="section-label">Rechtliches</p>
+        <h2 class="section-title">Datenschutzerklärung</h2>
+        <div class="section-divider"><span></span></div>
+      </div>
+
+      <h3>1. Verantwortlicher</h3>
+      <p>Daniele Mele<br>Zürich, Schweiz<br>E-Mail: danielemele90@hotmail.com</p>
+
+      <h3>2. Hosting</h3>
+      <p>Diese Webseite wird bei <strong>Vercel Inc.</strong> (340 S Lemon Ave #4133, Walnut, CA 91789, USA) gehostet. Beim Besuch der Seite werden technisch notwendige Daten (z.&nbsp;B. IP-Adresse, Zeitpunkt des Zugriffs, Browsertyp) durch den Hosting-Anbieter verarbeitet. Weitere Informationen: <a href="https://vercel.com/legal/privacy-policy" target="_blank" rel="noopener noreferrer">Vercel Privacy Policy</a>.</p>
+
+      <h3>3. Webanalyse</h3>
+      <p><strong>Vercel Analytics &amp; Speed Insights:</strong> Diese Seite nutzt Vercel Analytics und Vercel Speed Insights zur anonymen Auswertung der Seitennutzung und Ladezeiten. Es werden <strong>keine Cookies</strong> gesetzt und <strong>keine personenbezogenen Daten</strong> erhoben. Die Auswertung erfolgt auf Basis aggregierter, anonymer Daten.</p>
+
+      <h3>4. Google Fonts</h3>
+      <p>Diese Webseite verwendet Schriftarten von <strong>Google Fonts</strong> (Google Ireland Limited). Beim Laden der Seite wird eine Verbindung zu Google-Servern hergestellt, wobei Ihre IP-Adresse übermittelt wird. Weitere Informationen: <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer">Google Datenschutzerklärung</a>.</p>
+
+      <h3>5. Externe Dienste</h3>
+      <p><strong>Leaflet / unpkg:</strong> Für die interaktive Karte wird die Bibliothek Leaflet über unpkg.com geladen. Dabei kann eine Verbindung zu den Servern von unpkg hergestellt werden.</p>
+      <p><strong>Tailwind CSS:</strong> Das CSS-Framework wird über cdn.tailwindcss.com geladen, wobei eine Verbindung zu Cloudflare-Servern hergestellt wird.</p>
+
+      <h3>6. Kontaktformular</h3>
+      <p>Wenn du das Kontaktformular nutzt, werden deine Angaben (Vorname, Nachname, E-Mail, Nachricht) über den Dienst <strong>FormSubmit.co</strong> an die E-Mail-Adresse des Autors weitergeleitet. FormSubmit speichert die Daten temporär zur Zustellung. Es gelten die <a href="https://formsubmit.co/privacy.pdf" target="_blank" rel="noopener noreferrer">Datenschutzbestimmungen von FormSubmit</a>.</p>
+
+      <h3>7. Externe Links</h3>
+      <p>Diese Webseite enthält Links zu externen Seiten (Instagram, TikTok, Facebook, Orell Füssli, Ex Libris, Thalia, Amazon, Riverfield Verlag). Für deren Inhalte und Datenschutzpraktiken übernehmen wir keine Verantwortung.</p>
+
+      <h3>8. Deine Rechte</h3>
+      <p>Du hast das Recht auf Auskunft, Berichtigung, Löschung und Einschränkung der Verarbeitung deiner Daten. Kontaktiere uns unter danielemele90@hotmail.com.</p>
+
+      <h3>9. Änderungen</h3>
+      <p>Diese Datenschutzerklärung kann gelegentlich aktualisiert werden. Stand: April 2026.</p>
+
+      <button class="datenschutz-close" onclick="document.getElementById('datenschutz').classList.remove('visible'); window.scrollTo({top: document.body.scrollHeight, behavior: 'smooth'});">Schliessen</button>
+    </div>
+  </section>
+
   <!-- ── FOOTER ────────────────────────────────────── -->
   <footer>
     <div class="logo-text">Emil Saga</div>
@@ -2253,6 +2363,7 @@
       <a href="#buy">Kaufen</a>
       <a href="#kontakt">Kontakt</a>
       <a href="https://www.riverfield-verlag.ch" target="_blank" rel="noopener noreferrer">Verlag</a>
+      <a href="#datenschutz" id="datenschutz-link">Datenschutz</a>
     </div>
     <p class="footer-copy">&copy; 2026 Daniele Mele Freelancer &middot; Riverfield Verlag &middot; Alle Rechte vorbehalten</p>
   </footer>
@@ -2368,6 +2479,14 @@
   }, { rootMargin: '-40% 0px -55% 0px' });
 
   sections.forEach(s => spyObserver.observe(s));
+
+  // ── DATENSCHUTZ TOGGLE ──────────────────────────────
+  document.getElementById('datenschutz-link').addEventListener('click', function(e) {
+    e.preventDefault();
+    const ds = document.getElementById('datenschutz');
+    ds.classList.add('visible');
+    ds.scrollIntoView({ behavior: 'smooth' });
+  });
 
   // ── CONTACT FORM (AJAX) ─────────────────────────────
   document.getElementById('kontakt-form').addEventListener('submit', function(e) {
