@@ -2483,11 +2483,14 @@
       marker.addTo(map);
     });
 
-    // Scale labels with zoom
+    // Scale labels with zoom + container size
     const baseZoom = map.getZoom();
+    const baseWidth = 1100;
     function scaleLabels() {
       const zoom = map.getZoom();
-      const scale = Math.pow(2, zoom - baseZoom);
+      const containerWidth = map.getContainer().clientWidth;
+      const sizeRatio = containerWidth / baseWidth;
+      const scale = Math.pow(2, zoom - baseZoom) * sizeRatio;
       document.querySelectorAll('.city-label').forEach(el => {
         el.style.transform = `scale(${scale})`;
         el.style.transformOrigin = 'top left';
