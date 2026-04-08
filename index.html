@@ -46,6 +46,10 @@
   <!-- Anti-flicker: paint dark background immediately -->
   <style>html{background:#060d0b}</style>
 
+  <!-- LCP: preload hero images so browser discovers them immediately -->
+  <link rel="preload" as="image" href="book/emil_back_def_1.webp" type="image/webp" />
+  <link rel="preload" as="image" href="book/DM_Cover_FINAL.webp" type="image/webp" />
+
   <!-- Fonts: preconnect + non-render-blocking load -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -1961,7 +1965,7 @@
       <div class="book-widget">
         <div class="book-inner">
           <div class="book-front">
-            <img src="book/DM_Cover_FINAL.webp" alt="Emil der Todesengel – Buchcover" />
+            <img src="book/DM_Cover_FINAL.webp" alt="Emil der Todesengel – Buchcover" fetchpriority="high" />
             <div class="book-bind-top"></div>
             <div class="book-texture"></div>
           </div>
