@@ -2483,7 +2483,7 @@
       const marker = L.marker(latlng, { icon: makeIcon(type, name, pad) });
 
       const isMobile = window.innerWidth < 700;
-      const popup = L.popup({ maxWidth: isMobile ? 160 : 300, minWidth: isMobile ? 110 : 200, autoPan: false })
+      const popup = L.popup({ maxWidth: isMobile ? 160 : 300, minWidth: isMobile ? 110 : 200, autoPan: !isMobile, autoPanPadding: [40, 40] })
         .setContent(`
           <div class="popup-inner">
             <h4>${name}</h4>
@@ -2510,6 +2510,12 @@
       });
     }
     map.on('zoom', scaleLabels);
+
+    if (window.innerWidth >= 700) {
+      map.on('popupclose', () => {
+        map.flyToBounds(bounds, { duration: 0.4, padding: [0, 0] });
+      });
+    }
 
     scaleLabels();
 
