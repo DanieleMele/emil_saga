@@ -2409,8 +2409,9 @@
     let W, H;
 
     function resize() {
-      W = canvas.width  = canvas.offsetWidth;
-      H = canvas.height = canvas.offsetHeight;
+      const rect = canvas.getBoundingClientRect();
+      W = canvas.width  = rect.width;
+      H = canvas.height = rect.height;
     }
 
     class Particle {
@@ -2678,10 +2679,11 @@
     // Scale labels with zoom + container size
     const baseZoom = map.getZoom();
     const baseWidth = 1100;
+    let cachedContainerWidth = map.getContainer().clientWidth;
+    window.addEventListener('resize', () => { cachedContainerWidth = map.getContainer().clientWidth; });
     function scaleLabels() {
       const zoom = map.getZoom();
-      const containerWidth = map.getContainer().clientWidth;
-      const sizeRatio = containerWidth / baseWidth;
+      const sizeRatio = cachedContainerWidth / baseWidth;
       const scale = Math.pow(2, zoom - baseZoom) * sizeRatio;
       document.querySelectorAll('.city-label').forEach(el => {
         el.style.transform = `scale(${scale})`;
@@ -2750,11 +2752,13 @@
         [ 93,  217, 130,  80, 0.26, 3.7,  0.8, 210, 208, 218],
       ];
 
+      let cachedW = 800, cachedH = 600;
       function resize() {
-        const w = mapEl.offsetWidth  || mapEl.clientWidth  || 800;
-        const h = mapEl.offsetHeight || mapEl.clientHeight || 600;
-        if (canvas.width !== w)  canvas.width  = w;
-        if (canvas.height !== h) canvas.height = h;
+        const rect = mapEl.getBoundingClientRect();
+        cachedW = Math.round(rect.width)  || 800;
+        cachedH = Math.round(rect.height) || 600;
+        if (canvas.width !== cachedW)  canvas.width  = cachedW;
+        if (canvas.height !== cachedH) canvas.height = cachedH;
       }
 
       function drawBlob(cx, cy, rx, ry, op, r, g, b) {
@@ -2783,7 +2787,6 @@
       }
 
       function draw(t) {
-        resize();
         ctx.clearRect(0, 0, canvas.width, canvas.height);
 
         patches.forEach(([px, py, rx, ry, op, phase, spd, r, g, b]) => {
@@ -2816,7 +2819,8 @@
         else requestAnimationFrame(loop);
       });
 
-      map.on('move zoom resize', () => {});
+      map.on('move zoom resize', resize);
+      window.addEventListener('resize', resize);
       resize();
       requestAnimationFrame(loop);
     })();
