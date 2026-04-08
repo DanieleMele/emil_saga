@@ -2510,8 +2510,16 @@
       });
     }
     map.on('zoom', scaleLabels);
+
+    let prePopupCenter, prePopupZoom;
+    map.on('popupopen', () => {
+      prePopupCenter = map.getCenter();
+      prePopupZoom = map.getZoom();
+    });
     map.on('popupclose', () => {
-      map.flyToBounds(bounds, { duration: 0.4, padding: [0, 0] });
+      if (prePopupCenter) {
+        map.flyTo(prePopupCenter, prePopupZoom, { duration: 0.4 });
+      }
     });
     scaleLabels();
 
