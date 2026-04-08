@@ -1139,6 +1139,18 @@
       font-style: italic;
     }
 
+    @media (max-width: 700px) {
+      .popup-inner {
+        padding: 0.75rem 1rem 0.6rem;
+        min-width: 140px;
+        max-width: 180px;
+      }
+      .popup-inner h4 { font-size: 0.75rem; margin-bottom: 0.15rem; }
+      .popup-inner .popup-type { font-size: 0.5rem; margin-bottom: 0.4rem; }
+      .popup-inner p { font-size: 0.7rem; line-height: 1.5; }
+      .leaflet-popup-close-button { font-size: 14px !important; padding: 3px 5px !important; }
+    }
+
     /* ── CUSTOM MAP LABEL ──────────────────────────── */
     .city-label {
       white-space: nowrap;
@@ -2470,7 +2482,8 @@
       const latlng = [H - py, px];
       const marker = L.marker(latlng, { icon: makeIcon(type, name, pad) });
 
-      const popup = L.popup({ maxWidth: 300, minWidth: 200, autoPan: true, autoPanPadding: [40, 40] })
+      const isMobile = window.innerWidth < 700;
+      const popup = L.popup({ maxWidth: isMobile ? 160 : 300, minWidth: isMobile ? 110 : 200, autoPan: true, autoPanPadding: [20, 20] })
         .setContent(`
           <div class="popup-inner">
             <h4>${name}</h4>
