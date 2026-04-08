@@ -1829,22 +1829,23 @@
       </svg>
     </button>
 
-    <ul class="nav-links" id="nav-links">
-      <li>
-        <button class="mobile-close" id="mobile-close" aria-label="Menü schließen">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" />
-          </svg>
-        </button>
-      </li>
-      <li><a href="#description">Geschichte</a></li>
-      <li><a href="#autor">Autor</a></li>
-      <li><a href="#trilogie">Trilogie</a></li>
-      <li><a href="#map-section">Karte</a></li>
-      <li><a href="#buy">Kaufen</a></li>
-      <li><a href="#kontakt">Kontakt</a></li>
-    </ul>
   </nav>
+
+  <ul class="nav-links" id="nav-links">
+    <li>
+      <button class="mobile-close" id="mobile-close" aria-label="Menü schließen">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" />
+        </svg>
+      </button>
+    </li>
+    <li><a href="#description">Geschichte</a></li>
+    <li><a href="#autor">Autor</a></li>
+    <li><a href="#trilogie">Trilogie</a></li>
+    <li><a href="#map-section">Karte</a></li>
+    <li><a href="#buy">Kaufen</a></li>
+    <li><a href="#kontakt">Kontakt</a></li>
+  </ul>
 
   <!-- ── HERO ─────────────────────────────────────── -->
   <section id="hero">
@@ -2327,11 +2328,9 @@
 
   function openMenu() {
     navLinks.classList.add('open');
-    nav.style.zIndex = '9999';
   }
   function closeMenu() {
     navLinks.classList.remove('open');
-    nav.style.zIndex = '';
   }
 
   mobileToggle.addEventListener('click', openMenu);
