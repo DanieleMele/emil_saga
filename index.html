@@ -1734,6 +1734,7 @@
 
     .nav-links a:hover { color: var(--gold-light); }
     .nav-links a:focus-visible { outline: 2px solid var(--gold-light); outline-offset: 3px; }
+    .nav-links a.active { color: var(--gold); }
 
     /* ── MOBILE MENU ───────────────────────────────── */
     .mobile-toggle {
@@ -2350,6 +2351,23 @@
       closeMenu();
     });
   });
+
+  // ── SCROLL SPY ─────────────────────────────────────
+  const navAnchors = navLinks.querySelectorAll('a[href^="#"]');
+  const sections = Array.from(navAnchors).map(a => document.querySelector(a.getAttribute('href'))).filter(Boolean);
+
+  const spyObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const id = entry.target.id;
+        navAnchors.forEach(a => {
+          a.classList.toggle('active', a.getAttribute('href') === '#' + id);
+        });
+      }
+    });
+  }, { rootMargin: '-40% 0px -55% 0px' });
+
+  sections.forEach(s => spyObserver.observe(s));
 
   // ── CONTACT FORM (AJAX) ─────────────────────────────
   document.getElementById('kontakt-form').addEventListener('submit', function(e) {
