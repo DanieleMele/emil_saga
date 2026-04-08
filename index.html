@@ -1763,16 +1763,14 @@
         align-items: center;
         justify-content: center;
         gap: 2.5rem;
-        visibility: hidden;
-        opacity: 0;
+        transform: translateX(100%);
         pointer-events: none;
-        transition: opacity 0.3s ease, visibility 0.3s ease;
+        transition: transform 0.3s ease;
         z-index: 9999;
       }
 
       .nav-links.open {
-        visibility: visible;
-        opacity: 1;
+        transform: translateX(0);
         pointer-events: auto;
       }
 
