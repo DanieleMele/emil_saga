@@ -822,6 +822,27 @@
       letter-spacing: 0.02em;
     }
 
+    .verlag-logo {
+      height: 1.6em;
+      width: auto;
+      display: inline-block;
+      vertical-align: middle;
+      filter: invert(73%) sepia(50%) saturate(400%) hue-rotate(5deg) brightness(90%);
+      opacity: 0.92;
+      transition: opacity 0.2s ease, filter 0.2s ease;
+    }
+
+    .detail-value a:hover .verlag-logo,
+    .detail-value a:focus-visible .verlag-logo {
+      opacity: 1;
+      filter: invert(82%) sepia(50%) saturate(450%) hue-rotate(5deg) brightness(100%);
+    }
+
+    .detail-value a:focus-visible {
+      outline: 2px solid var(--gold-light);
+      outline-offset: 4px;
+    }
+
     /* ── AUTHOR SOCIAL LINKS ─────────────────────────── */
     .autor-socials {
       display: flex;
@@ -1502,6 +1523,22 @@
       background: rgba(201,168,76,0.04);
     }
 
+    .autor-badge--link {
+      text-decoration: none;
+      transition: border-color 0.2s ease, background 0.2s ease, color 0.2s ease;
+    }
+
+    .autor-badge--link:hover {
+      border-color: rgba(201,168,76,0.5);
+      background: rgba(201,168,76,0.09);
+      color: var(--gold-light);
+    }
+
+    .autor-badge--link:focus-visible {
+      outline: 2px solid var(--gold-light);
+      outline-offset: 3px;
+    }
+
     .autor-text p {
       font-size: 1.05rem;
       color: var(--text-muted);
@@ -2096,7 +2133,7 @@
         </div>
         <div class="detail-item">
           <p class="detail-label">Verlag</p>
-          <p class="detail-value">Riverfield</p>
+          <p class="detail-value"><a href="https://www.riverfield-verlag.ch" target="_blank" rel="noopener noreferrer" aria-label="Riverfield Verlag besuchen"><img src="book/riverfield_logo.webp" alt="Riverfield Verlag" width="280" height="85" loading="lazy" class="verlag-logo" /></a></p>
         </div>
       </div>
     </div>
@@ -2144,7 +2181,7 @@
             <div class="autor-badge"><img src="book/landscape_ch.webp" alt="" style="width:16px;height:16px;filter:invert(73%) sepia(50%) saturate(400%) hue-rotate(5deg) brightness(90%);vertical-align:middle;margin-right:4px;">Zürich, Schweiz</div>
             <div class="autor-badge"><img src="book/train.webp" alt="" style="width:16px;height:16px;filter:invert(73%) sepia(50%) saturate(400%) hue-rotate(5deg) brightness(90%);vertical-align:middle;margin-right:4px;">Lokführer & Autor</div>
             <div class="autor-badge"><img src="book/book.webp" alt="" style="width:16px;height:16px;filter:invert(73%) sepia(50%) saturate(400%) hue-rotate(5deg) brightness(90%);vertical-align:middle;margin-right:4px;">Fantasy-Trilogie</div>
-            <div class="autor-badge">✦ Riverfield Verlag</div>
+            <a href="https://www.riverfield-verlag.ch" target="_blank" rel="noopener noreferrer" class="autor-badge autor-badge--link" aria-label="Riverfield Verlag besuchen"><img src="book/riverfield_logo.webp" alt="Riverfield" width="280" height="85" loading="lazy" class="verlag-logo" />Verlag</a>
           </div>
 
           <div class="autor-socials">
@@ -2166,10 +2203,6 @@
               </svg>
             </a>
           </div>
-
-          <a href="https://www.riverfield-verlag.ch" target="_blank" rel="noopener noreferrer" class="btn-ghost">
-            Riverfield Verlag besuchen →
-          </a>
         </div>
       </div>
     </div>
