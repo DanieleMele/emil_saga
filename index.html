@@ -1079,13 +1079,15 @@
     }
 
     .map-wrapper {
-      max-width: 1100px;
+      max-width: min(1400px, 95vw);
       margin: 0 auto;
       position: relative;
     }
 
     .map-frame {
       position: relative;
+      width: min(100%, calc(80vh * 1494 / 1106));
+      margin: 0 auto;
       border: 1px solid rgba(201,168,76,0.25);
       box-shadow:
         0 0 0 1px rgba(0,0,0,0.8),
@@ -1101,7 +1103,7 @@
       height: 20px;
       border-color: var(--gold);
       border-style: solid;
-      z-index: 10;
+      z-index: 25;
       pointer-events: none;
     }
 
@@ -1117,12 +1119,13 @@
 
     #leaflet-map {
       width: 100%;
-      aspect-ratio: 1474 / 1106;
+      aspect-ratio: 1494 / 1106;
       cursor: crosshair;
     }
 
     @media (max-width: 700px) {
       #map-section { padding: 5rem 0.75rem; }
+      .map-frame { width: 100%; }
       #leaflet-map { aspect-ratio: 3 / 4; }
     }
 
@@ -1178,33 +1181,34 @@
     }
 
     .popup-inner {
-      padding: 1.25rem 1.5rem 1rem;
-      min-width: 200px;
-      max-width: 280px;
+      --popup-scale: 1;
+      padding: calc(0.85rem * var(--popup-scale)) calc(1rem * var(--popup-scale)) calc(0.7rem * var(--popup-scale));
+      min-width: calc(150px * var(--popup-scale));
+      max-width: calc(200px * var(--popup-scale));
     }
 
     .popup-inner h4 {
       font-family: 'Cinzel', serif;
-      font-size: 1rem;
+      font-size: calc(0.78rem * var(--popup-scale));
       font-weight: 600;
       color: var(--gold-light);
-      margin-bottom: 0.3rem;
+      margin-bottom: calc(0.2rem * var(--popup-scale));
       letter-spacing: 0.04em;
     }
 
     .popup-inner .popup-type {
       font-family: 'Cinzel', serif;
-      font-size: 0.65rem;
+      font-size: calc(0.52rem * var(--popup-scale));
       letter-spacing: 0.2em;
       text-transform: uppercase;
       color: var(--gold-dim);
-      margin-bottom: 0.75rem;
+      margin-bottom: calc(0.5rem * var(--popup-scale));
     }
 
     .popup-inner p {
-      font-size: 0.95rem;
+      font-size: calc(0.72rem * var(--popup-scale));
       color: var(--text-muted);
-      line-height: 1.6;
+      line-height: 1.55;
       font-style: italic;
     }
 
@@ -2629,16 +2633,36 @@
       interactive: false,
     }).addTo(map);
 
-    map.fitBounds(bounds);
-    map.setMinZoom(map.getZoom());
+    const mapEl = document.getElementById('leaflet-map');
+
+    function fitMapToBounds() {
+      if (mapEl.clientWidth <= 0) return;
+      map.closePopup();
+      map.setMinZoom(-5);
+      map.invalidateSize({ animate: false, pan: false });
+      map.fitBounds(bounds, { animate: false });
+      map.setMinZoom(map.getZoom());
+    }
+    fitMapToBounds();
+
+    let refitRaf = 0;
+    const scheduleRefit = () => {
+      if (refitRaf) cancelAnimationFrame(refitRaf);
+      refitRaf = requestAnimationFrame(() => {
+        refitRaf = 0;
+        fitMapToBounds();
+      });
+    };
+    const mapResizeObserver = new ResizeObserver(scheduleRefit);
+    mapResizeObserver.observe(mapEl);
 
     const cities = [
-      [790,  396, 'Gottenburg',           'city',  'Gottenburg war von einer hohen Steinmauer umgeben. Auf einem Hügel thronte eine schwarze, imposante Burg mit unzähligen Fahnen des Imperiums. Die Stadt wird von der Familie Gottenberger regiert.','3.7px 12px'],
+      [790,  396, 'Gottenburg',           'city',  'Gottenburg war von einer hohen Steinmauer umgeben. Auf einem Hügel thronte eine schwarze, imposante Burg mit unzähligen Fahnen des Imperiums. Die Stadt wird von der Familie Gottenberger regiert.','3px 12px'],
       [991, 395, 'Akademie',             'special',  'Die Akademie bildet die zukünftigen Soldaten des Imperiums ab Gruppenleiter (Stufe 1) aus. Die Dauer der Ausbildung richtet sich nach der Machtstufe: jede Stufe dauert ein Jahr.','3.7px 12px'],
       [826,  273, 'Erandor',              'village',   'Das Dorf war vor dem Imperium eine kleine Sadt und ein Teil vom Königreich Evandors.'],
       [777,  342, 'Sulomen',              'village',   'Kleine Stadt, deren Bewohner gewöhnlich sind, aber als sehr verschlossen gelten.','3.4px 13px'],
       [552,  209, 'Orendell',             'village',   'Ehemaliges Dorf des Königreichs Oderell, stets von Zurnburg und Oblivon aus verwaltet.'],
-      [382,  118, 'Jamaran',              'special',   'Im Norden gelegen, gilt Jamaran als Tor zu den Gebirgen Jadrams. Sie verbergen die Schmieden für die Waffen der Imperiale Familie und Inquisitoren. Hier leben keine normale Menschen...','3.7px 10px'],
+      [382,  118, 'Jamaran',              'special',   'Im Norden gelegen, gilt Jamaran als Tor zu den Gebirgen Jadrams. Sie verbergen die Schmieden für die Waffen der Imperiale Familie und Inquisitoren. Hier leben keine normale Menschen...','3.7px 8px'],
       [702,  127, 'Zurnburg',             'city',   'Eine alte Festungsstadt, deren Mauern mehr Belagerungen überlebt haben als die Erinnerungen der Menschen reichen.','3.7px 12px'],
       [1121, 391, 'Flinor',              'village',   'Flinor ist ein ruhiger Ausflugsort, besonders beliebt bei Studenten. Die Stadt zieht sich entlang des Sees, mit breiten Steinwegen und langen Steinstränden. Ursprünglich entstand sie zu Zeiten des alten Reichs Evandor.'],
       [1071, 484, 'Eccel',               'village',   'Ein kleines, strategisch wichtiges Dorf mit chaotisch angelegten Straßen und scheinbar willkürlich gebauten Häusern.'],
@@ -2702,7 +2726,7 @@
       const marker = L.marker(latlng, { icon: makeIcon(type, name, pad) });
 
       const isMobile = window.innerWidth < 700;
-      const popup = L.popup({ maxWidth: isMobile ? 160 : 300, minWidth: isMobile ? 110 : 200, autoPan: !isMobile, autoPanPadding: [40, 40] })
+      const popup = L.popup({ maxWidth: isMobile ? 160 : 300, minWidth: isMobile ? 110 : 200, autoPan: !isMobile, autoPanPaddingTopLeft: [40, 80], autoPanPaddingBottomRight: [40, 40] })
         .setContent(`
           <div class="popup-inner">
             <h4>${name}</h4>
@@ -2715,21 +2739,39 @@
       marker.addTo(map);
     });
 
-    // Scale labels with zoom + container size
-    const baseZoom = map.getZoom();
-    const baseWidth = 1100;
-    let cachedContainerWidth = map.getContainer().clientWidth;
-    window.addEventListener('resize', () => { cachedContainerWidth = map.getContainer().clientWidth; });
+    // Scale labels to match map pixel density (works for resize + pinch zoom)
+    const REF_WIDTH = 1100;
+    const SCALE_CONST = W / REF_WIDTH;
     function scaleLabels() {
-      const zoom = map.getZoom();
-      const sizeRatio = cachedContainerWidth / baseWidth;
-      const scale = Math.pow(2, zoom - baseZoom) * sizeRatio;
+      const scale = SCALE_CONST * Math.pow(2, map.getZoom());
       document.querySelectorAll('.city-label').forEach(el => {
         el.style.transform = `scale(${scale})`;
         el.style.transformOrigin = 'top left';
       });
     }
     map.on('zoom', scaleLabels);
+    map.on('zoomend', scaleLabels);
+    map.on('resize', scaleLabels);
+
+    // Scale popups based on container width + zoom (desktop only)
+    const mapFrameForPopup = document.querySelector('.map-frame');
+    const popupBaseZoom = map.getZoom();
+    function updatePopupScale() {
+      if (window.innerWidth < 700) {
+        mapFrameForPopup.style.removeProperty('--popup-scale');
+        return;
+      }
+      const containerW = map.getContainer().clientWidth;
+      const widthFactor = containerW / REF_WIDTH;
+      const zoomFactor = Math.pow(1.25, map.getZoom() - popupBaseZoom);
+      const scale = Math.max(0.85, Math.min(1.6, widthFactor * zoomFactor));
+      mapFrameForPopup.style.setProperty('--popup-scale', scale.toFixed(3));
+      if (map._popup) map._popup.update();
+    }
+    updatePopupScale();
+    map.on('zoomend', updatePopupScale);
+    map.on('resize', updatePopupScale);
+    map.on('popupopen', updatePopupScale);
 
     if (window.innerWidth >= 700) {
       let resetTimeout;
