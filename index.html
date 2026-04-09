@@ -48,7 +48,7 @@
 
   <!-- LCP: preload hero images so browser discovers them immediately -->
   <link rel="preload" as="image" href="book/emil_back_def_1.webp" type="image/webp" />
-  <link rel="preload" as="image" href="book/DM_Cover_FINAL.webp" type="image/webp" />
+  <link rel="preload" as="image" href="book/DM_Cover_FINAL.webp" imagesrcset="book/DM_Cover_FINAL-md.webp 480w, book/DM_Cover_FINAL.webp 800w" imagesizes="(min-width: 900px) 380px, 300px" type="image/webp" />
 
   <!-- Fonts: preconnect + non-render-blocking load -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -1965,7 +1965,7 @@
       <div class="book-widget">
         <div class="book-inner">
           <div class="book-front">
-            <img src="book/DM_Cover_FINAL.webp" alt="Emil der Todesengel – Buchcover" width="800" height="1244" fetchpriority="high" />
+            <img src="book/DM_Cover_FINAL.webp" srcset="book/DM_Cover_FINAL-md.webp 480w, book/DM_Cover_FINAL.webp 800w" sizes="(min-width: 900px) 380px, 300px" alt="Emil der Todesengel – Buchcover" width="800" height="1244" fetchpriority="high" />
             <div class="book-bind-top"></div>
             <div class="book-texture"></div>
           </div>
