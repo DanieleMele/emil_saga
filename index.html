@@ -2821,7 +2821,7 @@
         else requestAnimationFrame(loop);
       });
 
-      map.on('move zoom resize', resize);
+      map.on('resize', resize);
       window.addEventListener('resize', resize);
       resize();
       requestAnimationFrame(loop);
