@@ -540,12 +540,17 @@
     }
 
     footer .logo-text {
+      display: inline-block;
       font-family: 'Cinzel Decorative', serif;
       font-size: 1.4rem;
       color: var(--gold);
+      text-decoration: none;
       margin-bottom: 1.5rem;
       letter-spacing: 0.05em;
+      transition: color 0.2s ease;
     }
+    footer .logo-text:hover { color: var(--gold-light); }
+    footer .logo-text:focus-visible { outline: 2px solid var(--gold-light); outline-offset: 3px; }
 
     .footer-links {
       display: flex;
@@ -908,7 +913,7 @@
 
   <!-- ── FOOTER ────────────────────────────────────── -->
   <footer>
-    <div class="logo-text">Emil Saga</div>
+    <a href="/#hero" class="logo-text">Emil Saga</a>
     <div class="footer-links">
       <a href="/#description">Geschichte</a>
       <a href="/#autor">Autor</a>
