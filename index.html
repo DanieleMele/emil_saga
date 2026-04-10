@@ -2939,8 +2939,8 @@
         maxWidth: isMobile ? 140 : 260,
         minWidth: isMobile ? 90 : 170,
         autoPan: !isMobile,
-        autoPanPaddingTopLeft: [40, 80],
-        autoPanPaddingBottomRight: [40, 40],
+        autoPanPaddingTopLeft: [20, 30],
+        autoPanPaddingBottomRight: [20, 20],
       })
         .setContent(`
           <div class="popup-inner">
@@ -2956,7 +2956,7 @@
 
     // On desktop, widen bounds while a popup is open so autoPan can reach
     // markers near the map edges, then restore tight bounds on close.
-    const loosePad = H * 1.2;
+    const loosePad = H * 0.35;
     const looseBounds = [[-loosePad, -loosePad], [H + loosePad, W + loosePad]];
     map.on('popupopen', () => {
       if (window.innerWidth >= 700) map.setMaxBounds(looseBounds);
