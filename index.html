@@ -55,11 +55,10 @@
   <link rel="preload" as="image" href="book/emil_back_def_1.webp" type="image/webp" />
   <link rel="preload" as="image" href="book/DM_Cover_FINAL.webp" imagesrcset="book/DM_Cover_FINAL-md.webp 480w, book/DM_Cover_FINAL.webp 800w" imagesizes="(min-width: 900px) 380px, 300px" type="image/webp" />
 
-  <!-- Fonts: preconnect + non-render-blocking load -->
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Cinzel:wght@400;500;600;700;900&family=Cormorant+SC:wght@300;400;500;600;700&family=Crimson+Text:ital,wght@0,400;0,600;1,400;1,600&display=swap" onload="this.onload=null;this.rel='stylesheet'" />
-  <noscript><link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Cinzel:wght@400;500;600;700;900&family=Cormorant+SC:wght@300;400;500;600;700&family=Crimson+Text:ital,wght@0,400;0,600;1,400;1,600&display=swap" rel="stylesheet" /></noscript>
+  <!-- Fonts: self-hosted, no third-party requests -->
+  <link rel="preload" href="/fonts/cinzeldecorative-400.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="preload" href="/fonts/crimsontext-400.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="stylesheet" href="/fonts/fonts.css" />
 
   <style>
     :root {
@@ -1798,14 +1797,16 @@
 
     .kontakt-success.show { display: block; }
 
-    /* ── DATENSCHUTZ SECTION ──────────────────────── */
-    #datenschutz {
+    /* ── DATENSCHUTZ / IMPRESSUM SECTIONS ─────────── */
+    #datenschutz,
+    #impressum {
       padding: 6rem 1.5rem;
       background: var(--dark-0);
       display: none;
     }
 
-    #datenschutz.visible { display: block; }
+    #datenschutz.visible,
+    #impressum.visible { display: block; }
 
     .datenschutz-container {
       max-width: 720px;
@@ -2506,6 +2507,46 @@
     </div>
   </section>
 
+  <!-- ── IMPRESSUM ──────────────────────────────────── -->
+  <section id="impressum">
+    <div class="datenschutz-container">
+      <div class="section-header">
+        <p class="section-label">Rechtliches</p>
+        <h2 class="section-title">Impressum</h2>
+        <div class="section-divider"><span></span></div>
+      </div>
+
+      <h3>Angaben gemäss Art. 3 lit. s UWG / §&nbsp;5 TMG</h3>
+      <p>
+        Daniele Mele<br>
+        c/o Riverfield Verlag GmbH<br>
+        Vorderbergweg 1<br>
+        4153 Reinach BL<br>
+        Schweiz
+      </p>
+
+      <h3>Kontakt</h3>
+      <p>E-Mail: danielemele90@hotmail.com</p>
+
+      <h3>Verantwortlich für den Inhalt</h3>
+      <p>Daniele Mele (Autor), Anschrift wie oben.</p>
+
+      <h3>Verlag</h3>
+      <p>Riverfield Verlag GmbH, Vorderbergweg 1, 4153 Reinach BL, Schweiz – <a href="https://www.riverfield-verlag.ch" target="_blank" rel="noopener noreferrer">riverfield-verlag.ch</a></p>
+
+      <h3>Art der Webseite</h3>
+      <p>Diese Webseite dient ausschliesslich der Präsentation des Buches «Emil der Todesengel» und seines Autors. Es findet <strong>kein direkter Verkauf</strong> über diese Seite statt; Käufe werden bei den verlinkten externen Buchhändlern abgewickelt.</p>
+
+      <h3>Haftungsausschluss</h3>
+      <p>Die Inhalte dieser Webseite wurden mit grösster Sorgfalt erstellt. Für die Richtigkeit, Vollständigkeit und Aktualität der Inhalte kann jedoch keine Gewähr übernommen werden. Die Haftung für Inhalte verlinkter externer Seiten liegt ausschliesslich bei deren Betreibern.</p>
+
+      <h3>Urheberrecht</h3>
+      <p>Alle Texte, Bilder und Grafiken auf dieser Webseite sind urheberrechtlich geschützt. Jede Verwendung ausserhalb der Grenzen des Urheberrechts bedarf der schriftlichen Zustimmung der jeweiligen Urheber oder Rechteinhaber.</p>
+
+      <button class="datenschutz-close" onclick="document.getElementById('impressum').classList.remove('visible'); window.scrollTo({top: document.body.scrollHeight, behavior: 'smooth'});">Schliessen</button>
+    </div>
+  </section>
+
   <!-- ── DATENSCHUTZ ────────────────────────────────── -->
   <section id="datenschutz">
     <div class="datenschutz-container">
@@ -2516,31 +2557,70 @@
       </div>
 
       <h3>1. Verantwortlicher</h3>
-      <p>Daniele Mele<br>Zürich, Schweiz<br>E-Mail: danielemele90@hotmail.com</p>
+      <p>Verantwortlicher für die Datenverarbeitung im Sinne der EU-Datenschutz-Grundverordnung (DSGVO) sowie des revidierten Schweizer Datenschutzgesetzes (revDSG) ist:</p>
+      <p>
+        Daniele Mele<br>
+        c/o Riverfield Verlag GmbH<br>
+        Vorderbergweg 1<br>
+        4153 Reinach BL<br>
+        Schweiz<br>
+        E-Mail: danielemele90@hotmail.com
+      </p>
 
-      <h3>2. Hosting</h3>
-      <p>Diese Webseite wird bei <strong>Vercel Inc.</strong> (340 S Lemon Ave #4133, Walnut, CA 91789, USA) gehostet. Beim Besuch der Seite werden technisch notwendige Daten (z.&nbsp;B. IP-Adresse, Zeitpunkt des Zugriffs, Browsertyp) durch den Hosting-Anbieter verarbeitet. Weitere Informationen: <a href="https://vercel.com/legal/privacy-policy" target="_blank" rel="noopener noreferrer">Vercel Privacy Policy</a>.</p>
+      <h3>2. Grundsätze der Datenverarbeitung</h3>
+      <p>Ich verarbeite personenbezogene Daten nur, soweit dies für die Bereitstellung dieser Webseite und ihrer Inhalte erforderlich ist. Diese Seite setzt <strong>keine Tracking- oder Marketing-Cookies</strong>, bildet keine Nutzerprofile und betreibt keine profilbasierte Werbung.</p>
 
-      <h3>3. Webanalyse</h3>
-      <p><strong>Vercel Analytics &amp; Speed Insights:</strong> Diese Seite nutzt Vercel Analytics und Vercel Speed Insights zur anonymen Auswertung der Seitennutzung und Ladezeiten. Es werden <strong>keine Cookies</strong> gesetzt und <strong>keine personenbezogenen Daten</strong> erhoben. Die Auswertung erfolgt auf Basis aggregierter, anonymer Daten.</p>
+      <h3>3. Hosting und Bereitstellung</h3>
+      <p><strong>Anbieter:</strong> Vercel Inc., 340 S Lemon Ave #4133, Walnut, CA 91789, USA.</p>
+      <p><strong>Zweck:</strong> Auslieferung der Webseite und Sicherstellung des Betriebs.</p>
+      <p><strong>Verarbeitete Daten:</strong> Bei jedem Seitenaufruf werden technisch notwendige Zugriffsdaten verarbeitet (IP-Adresse, Datum und Uhrzeit, angefragte URL, Referrer-URL, Browser- und Betriebssystem-Kennung).</p>
+      <p><strong>Rechtsgrundlage:</strong> Art.&nbsp;6 Abs.&nbsp;1 lit.&nbsp;f DSGVO (berechtigtes Interesse am sicheren und stabilen Betrieb der Webseite); für Besucher aus der Schweiz Art.&nbsp;31 Abs.&nbsp;1 revDSG (überwiegendes privates Interesse).</p>
+      <p><strong>Aufbewahrung:</strong> Zugriffslogs werden spätestens nach 30 Tagen automatisch gelöscht bzw. anonymisiert.</p>
+      <p><strong>Datenübermittlung in die USA:</strong> Vercel Inc. ist unter dem <em>EU-U.S. Data Privacy Framework</em> sowie dessen Schweizer Ergänzung (<em>Swiss-U.S. Data Privacy Framework</em>) zertifiziert. Damit besteht ein anerkanntes Schutzniveau gemäss Art.&nbsp;45 DSGVO bzw. Art.&nbsp;16 revDSG. Details: <a href="https://vercel.com/legal/privacy-policy" target="_blank" rel="noopener noreferrer">Vercel Privacy Policy</a>.</p>
 
-      <h3>4. Google Fonts</h3>
-      <p>Diese Webseite verwendet Schriftarten von <strong>Google Fonts</strong> (Google Ireland Limited). Beim Laden der Seite wird eine Verbindung zu Google-Servern hergestellt, wobei Ihre IP-Adresse übermittelt wird. Weitere Informationen: <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer">Google Datenschutzerklärung</a>.</p>
+      <h3>4. Reichweitenmessung (Vercel Analytics &amp; Speed Insights)</h3>
+      <p><strong>Dienstleister:</strong> Vercel Inc. (Adresse wie oben).</p>
+      <p><strong>Zweck:</strong> Aggregierte, pseudonyme Auswertung der Seitennutzung und Ladezeiten zur Qualitätssicherung und Performance-Optimierung.</p>
+      <p><strong>Verfahren:</strong> Es werden <strong>keine Cookies</strong> gesetzt und keine dauerhaften Nutzerkennungen gebildet. Aus IP-Adresse und User-Agent leitet Vercel serverseitig einen pseudonymen, tagesweise rotierenden Hash ab, der keine Wiedererkennung einzelner Personen über längere Zeiträume erlaubt.</p>
+      <p><strong>Rechtsgrundlage:</strong> Art.&nbsp;6 Abs.&nbsp;1 lit.&nbsp;f DSGVO (berechtigtes Interesse an Reichweitenmessung und Performance-Überwachung) bzw. Art.&nbsp;31 revDSG.</p>
+      <p><strong>Aufbewahrung:</strong> Die aggregierten Statistiken werden maximal 12 Monate vorgehalten. Datentransfer in die USA: siehe Ziff.&nbsp;3.</p>
 
-      <h3>5. Externe Dienste</h3>
-      <p><strong>Leaflet / unpkg:</strong> Für die interaktive Karte wird die Bibliothek Leaflet über unpkg.com geladen. Dabei kann eine Verbindung zu den Servern von unpkg hergestellt werden.</p>
+      <h3>5. Schriftarten und Kartenmaterial</h3>
+      <p>Schriftarten (Cinzel, Cinzel&nbsp;Decorative, Cormorant&nbsp;SC, Crimson&nbsp;Text) sowie die Karten-Bibliothek Leaflet werden <strong>lokal von dieser Webseite</strong> ausgeliefert. Es findet <strong>keine Verbindung zu Google Fonts, unpkg.com oder anderen externen CDNs</strong> statt; es werden keine Daten an Dritte übermittelt.</p>
 
       <h3>6. Kontaktformular</h3>
-      <p>Wenn du das Kontaktformular nutzt, werden deine Angaben (Vorname, Nachname, E-Mail, Nachricht) über den Dienst <strong>FormSubmit.co</strong> an die E-Mail-Adresse des Autors weitergeleitet. FormSubmit speichert die Daten temporär zur Zustellung. Es gelten die <a href="https://formsubmit.co/privacy.pdf" target="_blank" rel="noopener noreferrer">Datenschutzbestimmungen von FormSubmit</a>.</p>
+      <p><strong>Dienstleister:</strong> Formsubmit (FormSubmit.co), betrieben in den USA.</p>
+      <p><strong>Verarbeitete Daten:</strong> Vorname, Nachname, E-Mail-Adresse, Nachrichtentext.</p>
+      <p><strong>Zweck:</strong> Weiterleitung deiner Anfrage an die E-Mail-Adresse des Autors.</p>
+      <p><strong>Rechtsgrundlage:</strong> Art.&nbsp;6 Abs.&nbsp;1 lit.&nbsp;b DSGVO (Durchführung vorvertraglicher bzw. anfragebezogener Massnahmen) sowie Art.&nbsp;6 Abs.&nbsp;1 lit.&nbsp;a DSGVO (Einwilligung durch bewusstes Absenden des Formulars).</p>
+      <p><strong>Aufbewahrung:</strong> Nachrichten werden gelöscht, sobald die Anfrage abschliessend beantwortet ist, spätestens jedoch nach 24 Monaten.</p>
+      <p><strong>Datenübermittlung in die USA:</strong> Die Übermittlung erfolgt auf Grundlage deiner Einwilligung (Art.&nbsp;49 Abs.&nbsp;1 lit.&nbsp;a DSGVO). Bitte beachte die <a href="https://formsubmit.co/privacy.pdf" target="_blank" rel="noopener noreferrer">Datenschutzbestimmungen von FormSubmit</a>.</p>
 
       <h3>7. Externe Links</h3>
-      <p>Diese Webseite enthält Links zu externen Seiten (Instagram, TikTok, Facebook, Orell Füssli, Ex Libris, Thalia, Amazon, Riverfield Verlag). Für deren Inhalte und Datenschutzpraktiken übernehmen wir keine Verantwortung.</p>
+      <p>Diese Webseite enthält Links zu externen Angeboten (u.&nbsp;a. Instagram, TikTok, Facebook, Orell Füssli, Ex Libris, Thalia, Amazon, Riverfield Verlag). Mit dem Anklicken eines solchen Links verlässt du diese Webseite. Für die Datenverarbeitung auf den verlinkten Seiten übernehme ich keine Verantwortung – es gelten die jeweiligen Datenschutzerklärungen der Anbieter.</p>
 
       <h3>8. Deine Rechte</h3>
-      <p>Du hast das Recht auf Auskunft, Berichtigung, Löschung und Einschränkung der Verarbeitung deiner Daten. Kontaktiere uns unter danielemele90@hotmail.com.</p>
+      <p>Du hast jederzeit das Recht auf:</p>
+      <ul>
+        <li>Auskunft über die zu deiner Person gespeicherten Daten (Art.&nbsp;15 DSGVO / Art.&nbsp;25 revDSG),</li>
+        <li>Berichtigung unrichtiger Daten (Art.&nbsp;16 DSGVO / Art.&nbsp;32 revDSG),</li>
+        <li>Löschung deiner Daten (Art.&nbsp;17 DSGVO / Art.&nbsp;32 revDSG),</li>
+        <li>Einschränkung der Verarbeitung (Art.&nbsp;18 DSGVO),</li>
+        <li>Datenübertragbarkeit (Art.&nbsp;20 DSGVO),</li>
+        <li>Widerspruch gegen die Verarbeitung (Art.&nbsp;21 DSGVO),</li>
+        <li>Widerruf einer erteilten Einwilligung mit Wirkung für die Zukunft (Art.&nbsp;7 Abs.&nbsp;3 DSGVO).</li>
+      </ul>
+      <p>Zur Ausübung deiner Rechte genügt eine formlose E-Mail an danielemele90@hotmail.com.</p>
 
-      <h3>9. Änderungen</h3>
-      <p>Diese Datenschutzerklärung kann gelegentlich aktualisiert werden. Stand: April 2026.</p>
+      <h3>9. Beschwerderecht bei einer Aufsichtsbehörde</h3>
+      <p>Unabhängig davon steht dir ein Beschwerderecht bei einer Datenschutz-Aufsichtsbehörde zu:</p>
+      <ul>
+        <li><strong>Schweiz:</strong> Eidgenössischer Datenschutz- und Öffentlichkeitsbeauftragter (EDÖB), Feldeggweg&nbsp;1, 3003 Bern – <a href="https://www.edoeb.admin.ch" target="_blank" rel="noopener noreferrer">edoeb.admin.ch</a>.</li>
+        <li><strong>EU/EWR:</strong> bei der Datenschutz-Aufsichtsbehörde deines Mitgliedstaates bzw. deines Wohnsitzes.</li>
+      </ul>
+
+      <h3>10. Änderungen dieser Erklärung</h3>
+      <p>Diese Datenschutzerklärung kann bei Änderungen der Webseite oder der rechtlichen Vorgaben angepasst werden. Es gilt jeweils die bei Aufruf abrufbare Fassung. Stand: April 2026.</p>
 
       <button class="datenschutz-close" onclick="document.getElementById('datenschutz').classList.remove('visible'); window.scrollTo({top: document.body.scrollHeight, behavior: 'smooth'});">Schliessen</button>
     </div>
@@ -2558,6 +2638,7 @@
       <a href="#buy">Kaufen</a>
       <a href="#kontakt">Kontakt</a>
       <a href="https://www.riverfield-verlag.ch" target="_blank" rel="noopener noreferrer">Verlag</a>
+      <a href="#impressum" id="impressum-link">Impressum</a>
       <a href="#datenschutz" id="datenschutz-link">Datenschutz</a>
     </div>
     <p class="footer-copy">&copy; 2026 Daniele Mele Freelancer &middot; Riverfield Verlag &middot; Alle Rechte vorbehalten</p>
@@ -2676,12 +2757,14 @@
 
   sections.forEach(s => spyObserver.observe(s));
 
-  // ── DATENSCHUTZ TOGGLE ──────────────────────────────
-  document.getElementById('datenschutz-link').addEventListener('click', function(e) {
-    e.preventDefault();
-    const ds = document.getElementById('datenschutz');
-    ds.classList.add('visible');
-    ds.scrollIntoView({ behavior: 'smooth' });
+  // ── DATENSCHUTZ / IMPRESSUM TOGGLE ──────────────────
+  [['datenschutz-link', 'datenschutz'], ['impressum-link', 'impressum']].forEach(([linkId, secId]) => {
+    document.getElementById(linkId).addEventListener('click', function(e) {
+      e.preventDefault();
+      const sec = document.getElementById(secId);
+      sec.classList.add('visible');
+      sec.scrollIntoView({ behavior: 'smooth' });
+    });
   });
 
   // ── CONTACT FORM (AJAX) ─────────────────────────────
@@ -3034,11 +3117,11 @@
       mapObserver.disconnect();
       const link = document.createElement('link');
       link.rel = 'stylesheet';
-      link.href = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css';
+      link.href = '/vendor/leaflet/leaflet.css';
       document.head.appendChild(link);
 
       const script = document.createElement('script');
-      script.src = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js';
+      script.src = '/vendor/leaflet/leaflet.js';
       script.onload = initMap;
       document.body.appendChild(script);
     }
