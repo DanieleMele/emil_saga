@@ -1,5 +1,6 @@
 {
   "buildCommand": "node build-alt-domain.mjs",
+  "outputDirectory": ".",
   "rewrites": [
     {
       "source": "/",
