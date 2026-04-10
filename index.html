@@ -1287,33 +1287,33 @@
 
     .popup-inner {
       --popup-scale: 1;
-      padding: calc(0.6rem * var(--popup-scale)) calc(0.8rem * var(--popup-scale)) calc(0.55rem * var(--popup-scale));
-      min-width: calc(130px * var(--popup-scale));
-      max-width: calc(180px * var(--popup-scale));
+      padding: calc(0.7rem * var(--popup-scale)) calc(0.9rem * var(--popup-scale)) calc(0.65rem * var(--popup-scale));
+      min-width: calc(150px * var(--popup-scale));
+      max-width: calc(210px * var(--popup-scale));
     }
 
     .popup-inner h4 {
       font-family: 'Cinzel', serif;
-      font-size: calc(0.72rem * var(--popup-scale));
+      font-size: calc(0.88rem * var(--popup-scale));
       font-weight: 600;
       color: var(--gold-light);
-      margin-bottom: calc(0.15rem * var(--popup-scale));
+      margin-bottom: calc(0.2rem * var(--popup-scale));
       letter-spacing: 0.04em;
     }
 
     .popup-inner .popup-type {
       font-family: 'Cinzel', serif;
-      font-size: calc(0.48rem * var(--popup-scale));
+      font-size: calc(0.58rem * var(--popup-scale));
       letter-spacing: 0.18em;
       text-transform: uppercase;
       color: var(--gold-dim);
-      margin-bottom: calc(0.4rem * var(--popup-scale));
+      margin-bottom: calc(0.45rem * var(--popup-scale));
     }
 
     .popup-inner p {
-      font-size: calc(0.66rem * var(--popup-scale));
+      font-size: calc(0.8rem * var(--popup-scale));
       color: var(--text-muted);
-      line-height: 1.5;
+      line-height: 1.55;
       font-style: italic;
     }
 
@@ -2939,8 +2939,8 @@
         maxWidth: isMobile ? 140 : 260,
         minWidth: isMobile ? 90 : 170,
         autoPan: !isMobile,
-        autoPanPaddingTopLeft: [20, 30],
-        autoPanPaddingBottomRight: [20, 20],
+        autoPanPaddingTopLeft: [20, 55],
+        autoPanPaddingBottomRight: [20, 25],
       })
         .setContent(`
           <div class="popup-inner">
@@ -2956,7 +2956,7 @@
 
     // On desktop, widen bounds while a popup is open so autoPan can reach
     // markers near the map edges, then restore tight bounds on close.
-    const loosePad = H * 0.35;
+    const loosePad = H * 0.45;
     const looseBounds = [[-loosePad, -loosePad], [H + loosePad, W + loosePad]];
     map.on('popupopen', () => {
       if (window.innerWidth >= 700) map.setMaxBounds(looseBounds);
