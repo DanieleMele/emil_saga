@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Emil der Todesengel – Dark Fantasy Buch von Daniele Mele | Emil Saga</title>
   <meta name="description" content="Emil der Todesengel – Der Auftakt einer düsteren Fantasy-Trilogie von Daniele Mele. Ein deutscher Fantasy-Roman über Elfen, uralte Magie und ein Imperium. Jetzt als Hardcover erhältlich." />
-  <meta name="keywords" content="Emil der Todesengel, Emil Saga, Daniele Mele, Fantasy Buch, Dark Fantasy, Fantasy Roman, deutscher Fantasy Roman, Elfen, Elf, Fantasy Trilogie, Dark Fantasy Buch, Riverfield Verlag" />
+  <meta name="keywords" content="Emil der Todesengel, Emil Saga, Daniele Mele, Fantasy Buch, Dark Fantasy, Fantasy Roman, deutscher Fantasy Roman, Elfen, Elf, Fantasy Trilogie, Dark Fantasy Buch, Riverfield Verlag, Star Wars, Herr der Ringe, Der Name des Windes, Mathematik, Die Sprache der Welt" />
   <meta name="author" content="Daniele Mele" />
   <meta name="robots" content="index, follow" />
   <link rel="canonical" href="https://emilsaga.ch/" />
@@ -1145,6 +1145,107 @@
       opacity: 0.7;
     }
 
+    /* ── LESEPROBE CTA ─────────────────────────────── */
+    #leseprobe-cta {
+      padding: 4rem 1.5rem;
+      display: flex;
+      justify-content: center;
+    }
+
+    .leseprobe-card {
+      display: flex;
+      align-items: center;
+      gap: 1.75rem;
+      max-width: 640px;
+      width: 100%;
+      padding: 1.75rem 2rem;
+      background: linear-gradient(135deg, rgba(20,28,22,0.85) 0%, rgba(12,18,14,0.85) 100%);
+      border: 1px solid rgba(201,168,76,0.25);
+      border-radius: 2px;
+      box-shadow:
+        0 20px 50px rgba(0,0,0,0.5),
+        0 0 30px rgba(201,168,76,0.08),
+        inset 0 1px 0 rgba(201,168,76,0.15);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      text-decoration: none;
+      transition: transform 0.25s cubic-bezier(0.34,1.56,0.64,1),
+                  border-color 0.2s ease,
+                  box-shadow 0.25s ease;
+    }
+
+    .leseprobe-card:hover {
+      transform: translateY(-3px);
+      border-color: rgba(201,168,76,0.5);
+      box-shadow:
+        0 25px 60px rgba(0,0,0,0.6),
+        0 0 40px rgba(201,168,76,0.15),
+        inset 0 1px 0 rgba(201,168,76,0.25);
+    }
+
+    .leseprobe-card:active { transform: translateY(-1px); }
+    .leseprobe-card:focus-visible { outline: 2px solid var(--gold-light); outline-offset: 4px; }
+
+    .leseprobe-icon {
+      flex-shrink: 0;
+      width: 72px;
+      height: 72px;
+      object-fit: contain;
+      filter: invert(73%) sepia(50%) saturate(400%) hue-rotate(5deg) brightness(90%)
+              drop-shadow(0 4px 12px rgba(201,168,76,0.3));
+    }
+
+    .leseprobe-text { flex: 1; min-width: 0; }
+
+    .leseprobe-label {
+      font-family: 'Cinzel', serif;
+      font-size: 0.72rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--gold-dim);
+      margin-bottom: 0.4rem;
+    }
+
+    .leseprobe-title {
+      font-family: 'Cinzel', serif;
+      font-size: 1.3rem;
+      letter-spacing: -0.01em;
+      color: var(--gold-light);
+      margin: 0 0 0.5rem;
+      line-height: 1.2;
+    }
+
+    .leseprobe-desc {
+      font-family: 'Crimson Text', serif;
+      font-size: 1rem;
+      line-height: 1.5;
+      color: var(--text-muted);
+      margin: 0;
+    }
+
+    .leseprobe-arrow {
+      flex-shrink: 0;
+      font-family: 'Cinzel', serif;
+      font-size: 1.5rem;
+      color: var(--gold);
+      transition: transform 0.25s cubic-bezier(0.34,1.56,0.64,1);
+    }
+
+    .leseprobe-card:hover .leseprobe-arrow { transform: translateX(6px); }
+
+    @media (max-width: 640px) {
+      #leseprobe-cta { padding: 3rem 1rem; }
+      .leseprobe-card {
+        flex-direction: column;
+        text-align: center;
+        gap: 1.25rem;
+        padding: 1.75rem 1.5rem;
+      }
+      .leseprobe-icon { width: 64px; height: 64px; }
+      .leseprobe-title { font-size: 1.2rem; }
+      .leseprobe-arrow { display: none; }
+    }
+
     /* ── LEAFLET CUSTOM STYLES ─────────────────────── */
     .leaflet-container {
       background: #2b2010 !important;
@@ -2003,6 +2104,7 @@
     <li><a href="#autor">Autor</a></li>
     <li><a href="#trilogie">Trilogie</a></li>
     <li><a href="#map-section">Karte</a></li>
+    <li><a href="/leseprobe">Leseprobe</a></li>
     <li><a href="#buy">Kaufen</a></li>
     <li><a href="#kontakt">Kontakt</a></li>
   </ul>
@@ -2288,6 +2390,19 @@
     </div>
   </section>
 
+  <!-- ── LESEPROBE CTA ─────────────────────────────── -->
+  <section id="leseprobe-cta">
+    <a href="/leseprobe" class="leseprobe-card fade-in" aria-label="Leseprobe lesen – Kapitel 1">
+      <img src="book/leseprobe-icon.webp" alt="" class="leseprobe-icon" width="72" height="72" loading="lazy" />
+      <div class="leseprobe-text">
+        <p class="leseprobe-label">Kostenlos lesen</p>
+        <h3 class="leseprobe-title">Leseprobe – Kapitel 1</h3>
+        <p class="leseprobe-desc">Tauche ein in die ersten Seiten der Emil Saga.</p>
+      </div>
+      <span class="leseprobe-arrow" aria-hidden="true">→</span>
+    </a>
+  </section>
+
   <!-- ── BUY SECTION ───────────────────────────────── -->
   <section id="buy">
     <div class="buy-container">
@@ -2439,6 +2554,7 @@
       <a href="#autor">Autor</a>
       <a href="#trilogie">Trilogie</a>
       <a href="#map-section">Karte</a>
+      <a href="/leseprobe">Leseprobe</a>
       <a href="#buy">Kaufen</a>
       <a href="#kontakt">Kontakt</a>
       <a href="https://www.riverfield-verlag.ch" target="_blank" rel="noopener noreferrer">Verlag</a>

@@ -24,17 +24,28 @@ const MIME = {
   '.woff2': 'font/woff2',
 };
 
-createServer(async (req, res) => {
-  let url = req.url === '/' ? '/index.html' : req.url;
-  url = url.split('?')[0];
-  const filePath = join(__dirname, url);
+async function tryRead(filePath) {
   try {
-    const data = await readFile(filePath);
-    const ext = extname(filePath).toLowerCase();
-    res.writeHead(200, { 'Content-Type': MIME[ext] || 'application/octet-stream' });
-    res.end(data);
+    return await readFile(filePath);
   } catch {
-    res.writeHead(404);
-    res.end('Not found');
+    return null;
   }
+}
+
+createServer(async (req, res) => {
+  let url = req.url === '/' ? '/index.html' : req.url.split('?')[0];
+  const candidates = [url];
+  if (!extname(url)) candidates.push(url.replace(/\/$/, '') + '.html');
+
+  for (const candidate of candidates) {
+    const data = await tryRead(join(__dirname, candidate));
+    if (data) {
+      const ext = extname(candidate).toLowerCase();
+      res.writeHead(200, { 'Content-Type': MIME[ext] || 'application/octet-stream' });
+      res.end(data);
+      return;
+    }
+  }
+  res.writeHead(404);
+  res.end('Not found');
 }).listen(PORT, () => console.log(`Server running at http://localhost:${PORT}`));
