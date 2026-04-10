@@ -1,4 +1,17 @@
 {
+  "buildCommand": "node build-alt-domain.mjs",
+  "rewrites": [
+    {
+      "source": "/",
+      "has": [{ "type": "host", "value": "www.emilsaga.de" }],
+      "destination": "/index-de.html"
+    },
+    {
+      "source": "/",
+      "has": [{ "type": "host", "value": "emilsaga.de" }],
+      "destination": "/index-de.html"
+    }
+  ],
   "headers": [
     {
       "source": "/:all*(webp|jpg|jpeg|png|gif|svg|ico|avif|woff|woff2|ttf|otf|pdf)",

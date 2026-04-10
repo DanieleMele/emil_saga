@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://www.emilsaga.ch/sitemap.xml
+Sitemap: https://www.emilsaga.de/sitemap.xml
