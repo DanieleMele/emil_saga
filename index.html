@@ -3432,13 +3432,17 @@
         '<source src="' + base + '.webm" type="video/webm">' +
         '<source src="' + base + '.mp4" type="video/mp4">';
       video.poster = poster;
+      video.muted = true;
       video.load();
-      video.addEventListener('loadedmetadata', function once() {
-        video.removeEventListener('loadedmetadata', once);
+      function startPlayback() {
         try { if (resumeTime > 0) video.currentTime = resumeTime; } catch (e) {}
         video.muted = true;
         var p = video.play(); if (p && p.catch) p.catch(function(){});
+      }
+      ['loadedmetadata','loadeddata','canplay'].forEach(function(evt) {
+        video.addEventListener(evt, startPlayback, { once: true });
       });
+      startPlayback();
     }
     loadVideoForOrientation();
     window.matchMedia('(orientation: portrait)').addEventListener('change', loadVideoForOrientation);
