@@ -186,7 +186,7 @@
       #video-intro {
         height: 100vh;
         min-height: 0;
-        padding: 4rem 2rem 3rem;
+        padding: 4rem 0 3rem;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -3455,6 +3455,32 @@
     const introSoundBtn = document.getElementById('intro-sound');
     const pipSoundBtn = document.getElementById('pip-sound');
     if (!video || !pip || !introFrame) return;
+
+    // Force-start autoplay — try repeatedly on various events and
+    // fall back to starting on first user interaction.
+    function tryAutoplay() {
+      if (!video.paused) return;
+      video.muted = true;
+      var p = video.play();
+      if (p && typeof p.catch === 'function') p.catch(function() {});
+    }
+    tryAutoplay();
+    ['loadedmetadata', 'canplay', 'loadeddata'].forEach(function(evt) {
+      video.addEventListener(evt, tryAutoplay);
+    });
+    document.addEventListener('DOMContentLoaded', tryAutoplay);
+    window.addEventListener('load', tryAutoplay);
+
+    // First user interaction anywhere starts playback if autoplay was blocked
+    function onFirstInteraction() {
+      tryAutoplay();
+      ['click','touchstart','keydown','scroll'].forEach(function(evt) {
+        window.removeEventListener(evt, onFirstInteraction);
+      });
+    }
+    ['click','touchstart','keydown','scroll'].forEach(function(evt) {
+      window.addEventListener(evt, onFirstInteraction, { passive: true });
+    });
 
     let pipDismissed = false;
     let pipActive = false;
