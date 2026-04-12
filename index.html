@@ -167,6 +167,11 @@
       padding: 0;
     }
 
+    .video-intro-frame {
+      position: absolute;
+      inset: 0;
+    }
+
     #video-intro video {
       position: absolute;
       inset: 0;
@@ -186,14 +191,19 @@
         align-items: center;
         justify-content: center;
       }
-      #video-intro video {
+      .video-intro-frame {
         position: relative !important;
         inset: auto !important;
-        width: auto !important;
-        height: 100% !important;
-        max-width: 100%;
-        max-height: 100%;
+        width: 100%;
+        max-width: 900px;
         aspect-ratio: 16 / 9;
+        display: block;
+      }
+      #video-intro video {
+        position: absolute !important;
+        inset: 0 !important;
+        width: 100% !important;
+        height: 100% !important;
         object-fit: contain !important;
         display: block;
         -webkit-mask-image:
@@ -209,8 +219,8 @@
         background: none !important;
       }
       .video-intro-sound {
-        bottom: 0.75rem;
-        right: 0.75rem;
+        bottom: 0.6rem;
+        right: 0.6rem;
         width: 36px;
         height: 36px;
       }
@@ -2346,19 +2356,20 @@
 
   <!-- ── FULL-SCREEN VIDEO INTRO ───────────────────── -->
   <section id="video-intro">
-    <video
-      id="intro-video"
-      autoplay
-      muted
-      playsinline
-      preload="auto"
-      poster="book/BookTrailer-poster.jpg"
-    >
-      <source src="book/BookTrailer-web.webm" type="video/webm" />
-      <source src="book/BookTrailer-web.mp4" type="video/mp4" />
-    </video>
+    <div class="video-intro-frame">
+      <video
+        id="intro-video"
+        autoplay
+        muted
+        playsinline
+        preload="auto"
+        poster="book/BookTrailer-poster.jpg"
+      >
+        <source src="book/BookTrailer-web.webm" type="video/webm" />
+        <source src="book/BookTrailer-web.mp4" type="video/mp4" />
+      </video>
 
-    <button class="video-intro-sound" id="intro-sound" data-muted="true" aria-label="Ton ein-/ausschalten">
+      <button class="video-intro-sound" id="intro-sound" data-muted="true" aria-label="Ton ein-/ausschalten">
       <svg class="icon-off" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" fill="currentColor" opacity="0.3"/>
         <line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/>
@@ -2368,6 +2379,7 @@
         <path d="M19.07 4.93a10 10 0 010 14.14"/><path d="M15.54 8.46a5 5 0 010 7.07"/>
       </svg>
     </button>
+    </div>
 
     <div class="video-intro-scroll">
       <span>Scroll</span>
@@ -3453,14 +3465,23 @@
       pipSoundBtn.setAttribute('data-muted', String(muted));
     }
 
+    function ensurePlaying() {
+      // Play whichever video is currently the active one
+      var active = pipActive ? pipVideo : introVideo;
+      var p = active.play();
+      if (p && typeof p.catch === 'function') p.catch(function() {});
+    }
+
     // Intro sound toggle
     introSoundBtn.addEventListener('click', function() {
       syncMuteState(!introVideo.muted);
+      ensurePlaying();
     });
 
     // Pip sound toggle
     pipSoundBtn.addEventListener('click', function() {
       syncMuteState(!pipVideo.muted);
+      ensurePlaying();
     });
 
     function animateToPip() {
