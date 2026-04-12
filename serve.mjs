@@ -1,5 +1,6 @@
 import { createServer } from 'http';
-import { readFile } from 'fs/promises';
+import { readFile, stat } from 'fs/promises';
+import { createReadStream } from 'fs';
 import { extname, join } from 'path';
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
@@ -22,11 +23,25 @@ const MIME = {
   '.pdf': 'application/pdf',
   '.woff': 'font/woff',
   '.woff2': 'font/woff2',
+  '.webp': 'image/webp',
+  '.mp4': 'video/mp4',
+  '.webm': 'video/webm',
+  '.ogg': 'video/ogg',
 };
+
+const STREAM_TYPES = new Set(['.mp4', '.webm', '.ogg']);
 
 async function tryRead(filePath) {
   try {
     return await readFile(filePath);
+  } catch {
+    return null;
+  }
+}
+
+async function tryStat(filePath) {
+  try {
+    return await stat(filePath);
   } catch {
     return null;
   }
@@ -38,10 +53,42 @@ createServer(async (req, res) => {
   if (!extname(url)) candidates.push(url.replace(/\/$/, '') + '.html');
 
   for (const candidate of candidates) {
-    const data = await tryRead(join(__dirname, candidate));
+    const filePath = join(__dirname, candidate);
+    const ext = extname(candidate).toLowerCase();
+    const contentType = MIME[ext] || 'application/octet-stream';
+
+    // Stream video files with range-request support
+    if (STREAM_TYPES.has(ext)) {
+      const fileStat = await tryStat(filePath);
+      if (!fileStat) continue;
+      const size = fileStat.size;
+      const range = req.headers.range;
+
+      if (range) {
+        const [startStr, endStr] = range.replace(/bytes=/, '').split('-');
+        const start = parseInt(startStr, 10);
+        const end = endStr ? parseInt(endStr, 10) : Math.min(start + 1024 * 1024 - 1, size - 1);
+        res.writeHead(206, {
+          'Content-Range': `bytes ${start}-${end}/${size}`,
+          'Accept-Ranges': 'bytes',
+          'Content-Length': end - start + 1,
+          'Content-Type': contentType,
+        });
+        createReadStream(filePath, { start, end }).pipe(res);
+      } else {
+        res.writeHead(200, {
+          'Content-Length': size,
+          'Content-Type': contentType,
+          'Accept-Ranges': 'bytes',
+        });
+        createReadStream(filePath).pipe(res);
+      }
+      return;
+    }
+
+    const data = await tryRead(filePath);
     if (data) {
-      const ext = extname(candidate).toLowerCase();
-      res.writeHead(200, { 'Content-Type': MIME[ext] || 'application/octet-stream' });
+      res.writeHead(200, { 'Content-Type': contentType });
       res.end(data);
       return;
     }

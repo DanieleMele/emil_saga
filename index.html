@@ -54,6 +54,7 @@
   <!-- LCP: preload the book cover first with high priority; background follows -->
   <link rel="preload" as="image" href="book/DM_Cover_FINAL-520.webp" imagesrcset="book/DM_Cover_FINAL-md.webp 480w, book/DM_Cover_FINAL-520.webp 520w, book/DM_Cover_FINAL.webp 800w" imagesizes="260px" type="image/webp" fetchpriority="high" />
   <link rel="preload" as="image" href="book/emil_back_def_1.webp" type="image/webp" fetchpriority="low" />
+  <link rel="preload" as="image" href="book/BookTrailer-poster.jpg" fetchpriority="high" />
 
   <!-- Fonts: self-hosted, no third-party requests -->
   <link rel="preload" href="/fonts/cinzeldecorative-400.woff2" as="font" type="font/woff2" crossorigin />
@@ -153,6 +154,234 @@
         width: 100%;
         margin: 0 auto;
       }
+    }
+
+    /* ── FULL-SCREEN VIDEO INTRO ────────────────────── */
+    #video-intro {
+      position: relative;
+      width: 100%;
+      height: 100vh;
+      overflow: hidden;
+      background: var(--dark-0);
+      z-index: 1;
+      padding: 0;
+    }
+
+    #video-intro video {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    /* Mobile portrait: reduce size and add padding so video isn't cropped */
+    @media (orientation: portrait) and (max-width: 900px) {
+      #video-intro {
+        height: 100vh;
+        min-height: 0;
+        padding: 4rem 2rem 3rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      #video-intro video {
+        position: relative !important;
+        inset: auto !important;
+        width: auto !important;
+        height: 100% !important;
+        max-width: 100%;
+        max-height: 100%;
+        aspect-ratio: 16 / 9;
+        object-fit: contain !important;
+        display: block;
+        -webkit-mask-image:
+          linear-gradient(to right,  transparent 0%, #000 10%, #000 90%, transparent 100%),
+          linear-gradient(to bottom, transparent 0%, #000 10%, #000 90%, transparent 100%);
+        -webkit-mask-composite: source-in;
+                mask-composite: intersect;
+        mask-image:
+          linear-gradient(to right,  transparent 0%, #000 10%, #000 90%, transparent 100%),
+          linear-gradient(to bottom, transparent 0%, #000 10%, #000 90%, transparent 100%);
+      }
+      #video-intro::after {
+        background: none !important;
+      }
+      .video-intro-sound {
+        bottom: 0.75rem;
+        right: 0.75rem;
+        width: 36px;
+        height: 36px;
+      }
+      .video-intro-scroll {
+        bottom: 0.5rem;
+      }
+    }
+
+    /* Top/bottom vignette */
+    #video-intro::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 1;
+      background:
+        linear-gradient(to bottom,
+          rgba(0,0,0,0.3) 0%,
+          transparent 15%,
+          transparent 85%,
+          var(--dark-0) 100%
+        );
+    }
+
+    .video-intro-scroll {
+      position: absolute;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.4rem;
+      color: rgba(255,255,255,0.7);
+      font-family: 'Cinzel', serif;
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+    }
+
+    .video-intro-scroll .arrow {
+      width: 1px;
+      height: 36px;
+      background: linear-gradient(to bottom, transparent, rgba(255,255,255,0.5));
+      animation: scrollPulse 2s ease-in-out infinite;
+    }
+
+    /* Sound toggle on the intro video */
+    .video-intro-sound {
+      position: absolute;
+      bottom: 2rem;
+      right: 2rem;
+      z-index: 2;
+      background: rgba(201,168,76,0.1);
+      border: 1px solid rgba(201,168,76,0.35);
+      border-radius: 50%;
+      width: 44px;
+      height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: var(--gold);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      transition: border-color 200ms ease, background 200ms ease;
+    }
+
+    .video-intro-sound:hover {
+      border-color: var(--gold);
+      background: rgba(201,168,76,0.2);
+    }
+
+    .video-intro-sound:focus-visible {
+      outline: 2px solid var(--gold-light);
+      outline-offset: 3px;
+    }
+
+    .video-intro-sound:active { transform: scale(0.94); }
+
+    .video-intro-sound .icon-on,
+    .video-intro-sound .icon-off { display: none; }
+    .video-intro-sound[data-muted="true"] .icon-off { display: block; }
+    .video-intro-sound[data-muted="false"] .icon-on { display: block; }
+
+    @media (max-width: 600px) {
+      .video-intro-sound { width: 38px; height: 38px; bottom: 1.5rem; right: 1rem; }
+      .video-intro-scroll { bottom: 1.5rem; }
+    }
+
+    /* ── MINI-PLAYER (floating pip) ──────────────── */
+    .video-pip {
+      position: fixed;
+      z-index: 9999;
+      border-radius: 10px;
+      overflow: visible;
+      pointer-events: none;
+      /* Start state: full viewport (animated via JS) */
+      top: 0; left: 0; width: 100%; height: 100vh;
+    }
+
+    .video-pip-inner {
+      position: absolute;
+      inset: 0;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow:
+        0 8px 32px rgba(0,0,0,0.6),
+        0 0 0 1px rgba(201,168,76,0.2);
+      opacity: 0;
+      pointer-events: none;
+      /* Animate all geometric props + opacity */
+      transition: opacity 500ms ease;
+    }
+
+    .video-pip.animating .video-pip-inner {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .video-pip.settled .video-pip-inner {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .video-pip.hidden .video-pip-inner {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .video-pip video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .video-pip-controls {
+      position: absolute;
+      top: 6px;
+      right: 6px;
+      z-index: 2;
+      display: flex;
+      gap: 4px;
+    }
+
+    .video-pip-btn {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      border: none;
+      background: rgba(0,0,0,0.55);
+      color: var(--gold);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 200ms ease;
+    }
+
+    .video-pip-btn:hover { background: rgba(0,0,0,0.75); }
+    .video-pip-btn:focus-visible { outline: 2px solid var(--gold-light); outline-offset: 2px; }
+
+    .video-pip-btn .icon-on,
+    .video-pip-btn .icon-off { display: none; }
+    .video-pip-btn[data-muted="true"] .icon-off { display: block; }
+    .video-pip-btn[data-muted="false"] .icon-on { display: block; }
+
+    @media (max-width: 600px) {
+      .video-pip-btn { width: 24px; height: 24px; }
     }
 
     /* ── BOOK COMPONENT ─────────────────────────────── */
@@ -2115,6 +2344,61 @@
     <li><a href="#kontakt">Kontakt</a></li>
   </ul>
 
+  <!-- ── FULL-SCREEN VIDEO INTRO ───────────────────── -->
+  <section id="video-intro">
+    <video
+      id="intro-video"
+      autoplay
+      muted
+      playsinline
+      preload="auto"
+      poster="book/BookTrailer-poster.jpg"
+    >
+      <source src="book/BookTrailer-web.webm" type="video/webm" />
+      <source src="book/BookTrailer-web.mp4" type="video/mp4" />
+    </video>
+
+    <button class="video-intro-sound" id="intro-sound" data-muted="true" aria-label="Ton ein-/ausschalten">
+      <svg class="icon-off" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" fill="currentColor" opacity="0.3"/>
+        <line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/>
+      </svg>
+      <svg class="icon-on" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" fill="currentColor" opacity="0.3"/>
+        <path d="M19.07 4.93a10 10 0 010 14.14"/><path d="M15.54 8.46a5 5 0 010 7.07"/>
+      </svg>
+    </button>
+
+    <div class="video-intro-scroll">
+      <span>Scroll</span>
+      <div class="arrow"></div>
+    </div>
+  </section>
+
+  <!-- ── MINI-PLAYER (appears on scroll) ─────────── -->
+  <div class="video-pip" id="video-pip">
+    <div class="video-pip-inner" id="video-pip-inner">
+      <video id="pip-video" muted playsinline preload="none"></video>
+      <div class="video-pip-controls">
+        <button class="video-pip-btn" id="pip-sound" data-muted="true" aria-label="Ton ein-/ausschalten">
+          <svg class="icon-off" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" fill="currentColor" opacity="0.3"/>
+            <line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/>
+          </svg>
+          <svg class="icon-on" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" fill="currentColor" opacity="0.3"/>
+            <path d="M19.07 4.93a10 10 0 010 14.14"/><path d="M15.54 8.46a5 5 0 010 7.07"/>
+          </svg>
+        </button>
+        <button class="video-pip-btn" id="pip-close" aria-label="Mini-Player schließen">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
   <!-- ── HERO ─────────────────────────────────────── -->
   <section id="hero">
     <canvas id="hero-canvas"></canvas>
@@ -3135,6 +3419,156 @@
       requestAnimationFrame(loop);
     })();
   }
+
+  // ── VIDEO INTRO → ANIMATED MINI-PLAYER ─────────────
+  (function() {
+    const introSection = document.getElementById('video-intro');
+    const introVideo = document.getElementById('intro-video');
+    const pip = document.getElementById('video-pip');
+    const pipInner = document.getElementById('video-pip-inner');
+    const pipVideo = document.getElementById('pip-video');
+    const pipClose = document.getElementById('pip-close');
+    const introSoundBtn = document.getElementById('intro-sound');
+    const pipSoundBtn = document.getElementById('pip-sound');
+    if (!introVideo || !pip || !pipVideo) return;
+
+    let pipDismissed = false;
+    let pipActive = false;
+
+    // Target pip dimensions
+    var PIP_W = window.innerWidth <= 600 ? 200 : 320;
+    var PIP_BOTTOM = window.innerWidth <= 600 ? 16 : 24;
+    var PIP_RIGHT = window.innerWidth <= 600 ? 16 : 24;
+
+    window.addEventListener('resize', function() {
+      PIP_W = window.innerWidth <= 600 ? 200 : 320;
+      PIP_BOTTOM = window.innerWidth <= 600 ? 16 : 24;
+      PIP_RIGHT = window.innerWidth <= 600 ? 16 : 24;
+    });
+
+    function syncMuteState(muted) {
+      introVideo.muted = muted;
+      pipVideo.muted = muted;
+      introSoundBtn.setAttribute('data-muted', String(muted));
+      pipSoundBtn.setAttribute('data-muted', String(muted));
+    }
+
+    // Intro sound toggle
+    introSoundBtn.addEventListener('click', function() {
+      syncMuteState(!introVideo.muted);
+    });
+
+    // Pip sound toggle
+    pipSoundBtn.addEventListener('click', function() {
+      syncMuteState(!pipVideo.muted);
+    });
+
+    function animateToPip() {
+      // Get intro video's current visual rect
+      var introRect = introSection.getBoundingClientRect();
+
+      // Calculate pip target rect
+      var pipH = PIP_W * (9 / 16);
+      var targetLeft = window.innerWidth - PIP_RIGHT - PIP_W;
+      var targetTop = window.innerHeight - PIP_BOTTOM - pipH;
+
+      // Set pip to start at intro video's position (full screen)
+      pip.style.top = introRect.top + 'px';
+      pip.style.left = introRect.left + 'px';
+      pip.style.width = introRect.width + 'px';
+      pip.style.height = introRect.height + 'px';
+      pip.style.transition = 'none';
+      pipInner.style.borderRadius = '0px';
+      pip.classList.remove('hidden', 'settled');
+      pip.classList.add('animating');
+
+      // Transfer playback — use the source the browser actually selected
+      pipVideo.src = introVideo.currentSrc || introVideo.querySelector('source').src;
+      pipVideo.currentTime = introVideo.currentTime;
+      pipVideo.muted = introVideo.muted;
+      pipVideo.play();
+      introVideo.pause();
+
+      // Force reflow then animate to corner
+      pip.offsetHeight;
+      pip.style.transition = 'top 600ms cubic-bezier(0.4,0,0.2,1), left 600ms cubic-bezier(0.4,0,0.2,1), width 600ms cubic-bezier(0.4,0,0.2,1), height 600ms cubic-bezier(0.4,0,0.2,1)';
+      pipInner.style.transition = 'border-radius 600ms cubic-bezier(0.4,0,0.2,1)';
+
+      pip.style.top = targetTop + 'px';
+      pip.style.left = targetLeft + 'px';
+      pip.style.width = PIP_W + 'px';
+      pip.style.height = pipH + 'px';
+      pipInner.style.borderRadius = '10px';
+
+      pip.addEventListener('transitionend', function handler() {
+        pip.removeEventListener('transitionend', handler);
+        pip.classList.remove('animating');
+        pip.classList.add('settled');
+      });
+
+      pipActive = true;
+    }
+
+    function animateToIntro() {
+      var introRect = introSection.getBoundingClientRect();
+
+      pip.style.transition = 'top 500ms cubic-bezier(0.4,0,0.2,1), left 500ms cubic-bezier(0.4,0,0.2,1), width 500ms cubic-bezier(0.4,0,0.2,1), height 500ms cubic-bezier(0.4,0,0.2,1)';
+      pipInner.style.transition = 'border-radius 500ms cubic-bezier(0.4,0,0.2,1), opacity 400ms ease 100ms';
+      pipInner.style.borderRadius = '0px';
+
+      pip.style.top = introRect.top + 'px';
+      pip.style.left = introRect.left + 'px';
+      pip.style.width = introRect.width + 'px';
+      pip.style.height = introRect.height + 'px';
+
+      pip.addEventListener('transitionend', function handler(e) {
+        if (e.propertyName !== 'width') return;
+        pip.removeEventListener('transitionend', handler);
+        // Transfer back
+        introVideo.currentTime = pipVideo.currentTime;
+        introVideo.muted = pipVideo.muted;
+        introVideo.play();
+        pipVideo.pause();
+        pip.classList.remove('animating', 'settled');
+        pip.classList.add('hidden');
+        pipActive = false;
+      });
+    }
+
+    function hidePip() {
+      pip.classList.remove('animating', 'settled');
+      pip.classList.add('hidden');
+      pipVideo.pause();
+      pipDismissed = true;
+      pipActive = false;
+    }
+
+    // Scroll observer
+    var observer = new IntersectionObserver(function(entries) {
+      var entry = entries[0];
+      if (!entry.isIntersecting && !pipDismissed && !introVideo.ended && !pipActive) {
+        animateToPip();
+      } else if (entry.isIntersecting && pipActive) {
+        animateToIntro();
+      }
+    }, { threshold: 0.15 });
+
+    observer.observe(introSection);
+
+    // Close mini-player
+    pipClose.addEventListener('click', hidePip);
+
+    // When video ends, hide pip
+    pipVideo.addEventListener('ended', function() {
+      pip.classList.remove('animating', 'settled');
+      pip.classList.add('hidden');
+      pipActive = false;
+    });
+
+    introVideo.addEventListener('ended', function() {
+      pipDismissed = true;
+    });
+  })();
 
   // ── LAZY-LOAD LEAFLET ──────────────────────────────
   const mapObserver = new IntersectionObserver((entries) => {
