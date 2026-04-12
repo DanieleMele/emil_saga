@@ -386,9 +386,13 @@
     .video-pip-btn:focus-visible { outline: 2px solid var(--gold-light); outline-offset: 2px; }
 
     .video-pip-btn .icon-on,
-    .video-pip-btn .icon-off { display: none; }
+    .video-pip-btn .icon-off,
+    .video-pip-btn .icon-play,
+    .video-pip-btn .icon-pause { display: none; }
     .video-pip-btn[data-muted="true"] .icon-off { display: block; }
     .video-pip-btn[data-muted="false"] .icon-on { display: block; }
+    .video-pip-btn[data-paused="true"] .icon-play { display: block; }
+    .video-pip-btn[data-paused="false"] .icon-pause { display: block; }
 
     @media (max-width: 600px) {
       .video-pip-btn { width: 24px; height: 24px; }
@@ -2388,10 +2392,17 @@
   </section>
 
   <!-- ── MINI-PLAYER (appears on scroll) ─────────── -->
-  <div class="video-pip" id="video-pip">
+  <div class="video-pip hidden" id="video-pip">
     <div class="video-pip-inner" id="video-pip-inner">
-      <video id="pip-video" muted playsinline preload="none"></video>
       <div class="video-pip-controls">
+        <button class="video-pip-btn" id="pip-playpause" data-paused="false" aria-label="Abspielen/Pausieren">
+          <svg class="icon-pause" width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+            <rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/>
+          </svg>
+          <svg class="icon-play" width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M8 5.14v13.72a1 1 0 001.5.86l11.04-6.86a1 1 0 000-1.72L9.5 4.28A1 1 0 008 5.14z"/>
+          </svg>
+        </button>
         <button class="video-pip-btn" id="pip-sound" data-muted="true" aria-label="Ton ein-/ausschalten">
           <svg class="icon-off" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" fill="currentColor" opacity="0.3"/>
@@ -3435,14 +3446,15 @@
   // ── VIDEO INTRO → ANIMATED MINI-PLAYER ─────────────
   (function() {
     const introSection = document.getElementById('video-intro');
-    const introVideo = document.getElementById('intro-video');
+    const introFrame = introSection.querySelector('.video-intro-frame');
+    const video = document.getElementById('intro-video');
     const pip = document.getElementById('video-pip');
     const pipInner = document.getElementById('video-pip-inner');
-    const pipVideo = document.getElementById('pip-video');
     const pipClose = document.getElementById('pip-close');
+    const pipPlayPause = document.getElementById('pip-playpause');
     const introSoundBtn = document.getElementById('intro-sound');
     const pipSoundBtn = document.getElementById('pip-sound');
-    if (!introVideo || !pip || !pipVideo) return;
+    if (!video || !pip || !introFrame) return;
 
     let pipDismissed = false;
     let pipActive = false;
@@ -3459,74 +3471,62 @@
     });
 
     function syncMuteState(muted) {
-      introVideo.muted = muted;
-      pipVideo.muted = muted;
+      video.muted = muted;
       introSoundBtn.setAttribute('data-muted', String(muted));
       pipSoundBtn.setAttribute('data-muted', String(muted));
     }
 
     function ensurePlaying() {
-      // Play whichever video is currently the active one
-      var active = pipActive ? pipVideo : introVideo;
-      var p = active.play();
+      var p = video.play();
       if (p && typeof p.catch === 'function') p.catch(function() {});
     }
 
-    // Intro sound toggle
     introSoundBtn.addEventListener('click', function() {
-      syncMuteState(!introVideo.muted);
+      syncMuteState(!video.muted);
       ensurePlaying();
     });
-
-    // Pip sound toggle
     pipSoundBtn.addEventListener('click', function() {
-      syncMuteState(!pipVideo.muted);
+      syncMuteState(!video.muted);
       ensurePlaying();
     });
 
-    // If volume changes on either video (e.g. via OS volume button in some
-    // browsers), auto-unmute so the audio is actually audible.
-    function onVolumeChange(e) {
-      var v = e.target;
-      if (v.muted && v.volume > 0) {
+    video.addEventListener('volumechange', function() {
+      if (video.muted && video.volume > 0) {
         syncMuteState(false);
         ensurePlaying();
       }
-    }
-    introVideo.addEventListener('volumechange', onVolumeChange);
-    pipVideo.addEventListener('volumechange', onVolumeChange);
+    });
 
     function animateToPip() {
-      // Get intro video's current visual rect
-      var introRect = introSection.getBoundingClientRect();
+      if (pipActive) return;
+      pipActive = true;
 
-      // Calculate pip target rect
+      // Record video's current visual rect (FLIP: "first")
+      var fromRect = video.getBoundingClientRect();
+
+      // Move the video DOM node into the pip (state is preserved)
+      pipInner.appendChild(video);
+
+      // Target pip rect
       var pipH = PIP_W * (9 / 16);
       var targetLeft = window.innerWidth - PIP_RIGHT - PIP_W;
       var targetTop = window.innerHeight - PIP_BOTTOM - pipH;
 
-      // Set pip to start at intro video's position (full screen)
-      pip.style.top = introRect.top + 'px';
-      pip.style.left = introRect.left + 'px';
-      pip.style.width = introRect.width + 'px';
-      pip.style.height = introRect.height + 'px';
+      // Start pip at video's old position
       pip.style.transition = 'none';
+      pipInner.style.transition = 'none';
+      pip.style.top = fromRect.top + 'px';
+      pip.style.left = fromRect.left + 'px';
+      pip.style.width = fromRect.width + 'px';
+      pip.style.height = fromRect.height + 'px';
       pipInner.style.borderRadius = '0px';
       pip.classList.remove('hidden', 'settled');
       pip.classList.add('animating');
-
-      // Transfer playback — use the source the browser actually selected
-      pipVideo.src = introVideo.currentSrc || introVideo.querySelector('source').src;
-      pipVideo.currentTime = 0;
-      pipVideo.muted = introVideo.muted;
-      pipVideo.play();
-      introVideo.pause();
 
       // Force reflow then animate to corner
       pip.offsetHeight;
       pip.style.transition = 'top 600ms cubic-bezier(0.4,0,0.2,1), left 600ms cubic-bezier(0.4,0,0.2,1), width 600ms cubic-bezier(0.4,0,0.2,1), height 600ms cubic-bezier(0.4,0,0.2,1)';
       pipInner.style.transition = 'border-radius 600ms cubic-bezier(0.4,0,0.2,1)';
-
       pip.style.top = targetTop + 'px';
       pip.style.left = targetLeft + 'px';
       pip.style.width = PIP_W + 'px';
@@ -3539,29 +3539,26 @@
         pip.classList.add('settled');
       });
 
-      pipActive = true;
+      ensurePlaying();
     }
 
     function animateToIntro() {
-      var introRect = introSection.getBoundingClientRect();
+      if (!pipActive) return;
 
+      var toRect = introFrame.getBoundingClientRect();
       pip.style.transition = 'top 500ms cubic-bezier(0.4,0,0.2,1), left 500ms cubic-bezier(0.4,0,0.2,1), width 500ms cubic-bezier(0.4,0,0.2,1), height 500ms cubic-bezier(0.4,0,0.2,1)';
-      pipInner.style.transition = 'border-radius 500ms cubic-bezier(0.4,0,0.2,1), opacity 400ms ease 100ms';
+      pipInner.style.transition = 'border-radius 500ms cubic-bezier(0.4,0,0.2,1)';
       pipInner.style.borderRadius = '0px';
-
-      pip.style.top = introRect.top + 'px';
-      pip.style.left = introRect.left + 'px';
-      pip.style.width = introRect.width + 'px';
-      pip.style.height = introRect.height + 'px';
+      pip.style.top = toRect.top + 'px';
+      pip.style.left = toRect.left + 'px';
+      pip.style.width = toRect.width + 'px';
+      pip.style.height = toRect.height + 'px';
 
       pip.addEventListener('transitionend', function handler(e) {
         if (e.propertyName !== 'width') return;
         pip.removeEventListener('transitionend', handler);
-        // Transfer back
-        introVideo.currentTime = pipVideo.currentTime;
-        introVideo.muted = pipVideo.muted;
-        introVideo.play();
-        pipVideo.pause();
+        // Move video back into intro frame (playback continues)
+        introFrame.insertBefore(video, introFrame.firstChild);
         pip.classList.remove('animating', 'settled');
         pip.classList.add('hidden');
         pipActive = false;
@@ -3569,17 +3566,20 @@
     }
 
     function hidePip() {
+      // Move video back to intro frame but pause it
+      if (video.parentNode !== introFrame) {
+        introFrame.insertBefore(video, introFrame.firstChild);
+      }
+      video.pause();
       pip.classList.remove('animating', 'settled');
       pip.classList.add('hidden');
-      pipVideo.pause();
       pipDismissed = true;
       pipActive = false;
     }
 
-    // Scroll observer
     var observer = new IntersectionObserver(function(entries) {
       var entry = entries[0];
-      if (!entry.isIntersecting && !pipDismissed && !introVideo.ended && !pipActive) {
+      if (!entry.isIntersecting && !pipDismissed && !video.ended && !pipActive) {
         animateToPip();
       } else if (entry.isIntersecting && pipActive) {
         animateToIntro();
@@ -3588,18 +3588,34 @@
 
     observer.observe(introSection);
 
-    // Close mini-player
     pipClose.addEventListener('click', hidePip);
 
-    // When video ends, hide pip
-    pipVideo.addEventListener('ended', function() {
-      pip.classList.remove('animating', 'settled');
-      pip.classList.add('hidden');
-      pipActive = false;
+    pipPlayPause.addEventListener('click', function() {
+      if (video.paused) {
+        var p = video.play();
+        if (p && typeof p.catch === 'function') p.catch(function() {});
+      } else {
+        video.pause();
+      }
     });
 
-    introVideo.addEventListener('ended', function() {
+    video.addEventListener('play', function() {
+      pipPlayPause.setAttribute('data-paused', 'false');
+    });
+    video.addEventListener('pause', function() {
+      pipPlayPause.setAttribute('data-paused', 'true');
+    });
+
+    video.addEventListener('ended', function() {
       pipDismissed = true;
+      if (pipActive) {
+        if (video.parentNode !== introFrame) {
+          introFrame.insertBefore(video, introFrame.firstChild);
+        }
+        pip.classList.remove('animating', 'settled');
+        pip.classList.add('hidden');
+        pipActive = false;
+      }
     });
   })();
 
