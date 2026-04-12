@@ -3428,7 +3428,6 @@
       var base = 'book/trailer-' + orient + '-web';
       var poster = 'book/trailer-' + orient + '-poster.jpg';
       var resumeTime = video.currentTime || 0;
-      var wasPaused = video.paused;
       video.innerHTML =
         '<source src="' + base + '.webm" type="video/webm">' +
         '<source src="' + base + '.mp4" type="video/mp4">';
@@ -3436,8 +3435,9 @@
       video.load();
       video.addEventListener('loadedmetadata', function once() {
         video.removeEventListener('loadedmetadata', once);
-        try { video.currentTime = resumeTime; } catch (e) {}
-        if (!wasPaused) { var p = video.play(); if (p && p.catch) p.catch(function(){}); }
+        try { if (resumeTime > 0) video.currentTime = resumeTime; } catch (e) {}
+        video.muted = true;
+        var p = video.play(); if (p && p.catch) p.catch(function(){});
       });
     }
     loadVideoForOrientation();
