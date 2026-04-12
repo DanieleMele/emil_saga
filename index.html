@@ -3490,12 +3490,6 @@
       ensurePlaying();
     });
 
-    video.addEventListener('volumechange', function() {
-      if (video.muted && video.volume > 0) {
-        syncMuteState(false);
-        ensurePlaying();
-      }
-    });
 
     function animateToPip() {
       if (pipActive) return;
