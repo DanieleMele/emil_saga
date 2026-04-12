@@ -3517,7 +3517,7 @@
 
       // Transfer playback — use the source the browser actually selected
       pipVideo.src = introVideo.currentSrc || introVideo.querySelector('source').src;
-      pipVideo.currentTime = introVideo.currentTime;
+      pipVideo.currentTime = 0;
       pipVideo.muted = introVideo.muted;
       pipVideo.play();
       introVideo.pause();
