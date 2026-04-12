@@ -54,7 +54,8 @@
   <!-- LCP: preload the book cover first with high priority; background follows -->
   <link rel="preload" as="image" href="book/DM_Cover_FINAL-520.webp" imagesrcset="book/DM_Cover_FINAL-md.webp 480w, book/DM_Cover_FINAL-520.webp 520w, book/DM_Cover_FINAL.webp 800w" imagesizes="260px" type="image/webp" fetchpriority="high" />
   <link rel="preload" as="image" href="book/emil_back_def_1.webp" type="image/webp" fetchpriority="low" />
-  <link rel="preload" as="image" href="book/BookTrailer-poster.jpg" fetchpriority="high" />
+  <link rel="preload" as="image" href="book/trailer-landscape-poster.jpg" media="(orientation: landscape)" fetchpriority="high" />
+  <link rel="preload" as="image" href="book/trailer-portrait-poster.jpg" media="(orientation: portrait)" fetchpriority="high" />
 
   <!-- Fonts: self-hosted, no third-party requests -->
   <link rel="preload" href="/fonts/cinzeldecorative-400.woff2" as="font" type="font/woff2" crossorigin />
@@ -181,51 +182,16 @@
       display: block;
     }
 
-    /* Mobile portrait: reduce size and add padding so video isn't cropped */
+    /* Mobile portrait: sound button closer to corner */
     @media (orientation: portrait) and (max-width: 900px) {
-      #video-intro {
-        height: 100vh;
-        min-height: 0;
-        padding: 4rem 0 3rem;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-      }
-      .video-intro-frame {
-        position: relative !important;
-        inset: auto !important;
-        width: 100%;
-        max-width: 900px;
-        aspect-ratio: 16 / 9;
-        display: block;
-      }
-      #video-intro video {
-        position: absolute !important;
-        inset: 0 !important;
-        width: 100% !important;
-        height: 100% !important;
-        object-fit: contain !important;
-        display: block;
-        -webkit-mask-image:
-          linear-gradient(to right,  transparent 0%, #000 10%, #000 90%, transparent 100%),
-          linear-gradient(to bottom, transparent 0%, #000 10%, #000 90%, transparent 100%);
-        -webkit-mask-composite: source-in;
-                mask-composite: intersect;
-        mask-image:
-          linear-gradient(to right,  transparent 0%, #000 10%, #000 90%, transparent 100%),
-          linear-gradient(to bottom, transparent 0%, #000 10%, #000 90%, transparent 100%);
-      }
-      #video-intro::after {
-        background: none !important;
-      }
       .video-intro-sound {
-        bottom: 0.6rem;
-        right: 0.6rem;
-        width: 36px;
-        height: 36px;
+        bottom: 1rem;
+        right: 1rem;
+        width: 40px;
+        height: 40px;
       }
       .video-intro-scroll {
-        bottom: 0.5rem;
+        bottom: 1rem;
       }
     }
 
@@ -2367,11 +2333,7 @@
         muted
         playsinline
         preload="auto"
-        poster="book/BookTrailer-poster.jpg"
-      >
-        <source src="book/BookTrailer-web.webm" type="video/webm" />
-        <source src="book/BookTrailer-web.mp4" type="video/mp4" />
-      </video>
+      ></video>
 
       <button class="video-intro-sound" id="intro-sound" data-muted="true" aria-label="Ton ein-/ausschalten">
       <svg class="icon-off" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -3455,6 +3417,31 @@
     const introSoundBtn = document.getElementById('intro-sound');
     const pipSoundBtn = document.getElementById('pip-sound');
     if (!video || !pip || !introFrame) return;
+
+    // Orientation-based video source selection
+    var currentOrientation = null;
+    function loadVideoForOrientation() {
+      var isPortrait = window.matchMedia('(orientation: portrait)').matches;
+      var orient = isPortrait ? 'portrait' : 'landscape';
+      if (orient === currentOrientation) return;
+      currentOrientation = orient;
+      var base = 'book/trailer-' + orient + '-web';
+      var poster = 'book/trailer-' + orient + '-poster.jpg';
+      var resumeTime = video.currentTime || 0;
+      var wasPaused = video.paused;
+      video.innerHTML =
+        '<source src="' + base + '.webm" type="video/webm">' +
+        '<source src="' + base + '.mp4" type="video/mp4">';
+      video.poster = poster;
+      video.load();
+      video.addEventListener('loadedmetadata', function once() {
+        video.removeEventListener('loadedmetadata', once);
+        try { video.currentTime = resumeTime; } catch (e) {}
+        if (!wasPaused) { var p = video.play(); if (p && p.catch) p.catch(function(){}); }
+      });
+    }
+    loadVideoForOrientation();
+    window.matchMedia('(orientation: portrait)').addEventListener('change', loadVideoForOrientation);
 
     // Force-start autoplay — try repeatedly on various events and
     // fall back to starting on first user interaction.
