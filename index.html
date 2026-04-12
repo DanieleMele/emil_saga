@@ -3484,6 +3484,18 @@
       ensurePlaying();
     });
 
+    // If volume changes on either video (e.g. via OS volume button in some
+    // browsers), auto-unmute so the audio is actually audible.
+    function onVolumeChange(e) {
+      var v = e.target;
+      if (v.muted && v.volume > 0) {
+        syncMuteState(false);
+        ensurePlaying();
+      }
+    }
+    introVideo.addEventListener('volumechange', onVolumeChange);
+    pipVideo.addEventListener('volumechange', onVolumeChange);
+
     function animateToPip() {
       // Get intro video's current visual rect
       var introRect = introSection.getBoundingClientRect();
