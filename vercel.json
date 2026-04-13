@@ -6,7 +6,7 @@
   ],
   "headers": [
     {
-      "source": "/:all*(webp|jpg|jpeg|png|gif|svg|ico|avif|woff|woff2|ttf|otf|pdf)",
+      "source": "/:all*(webp|jpg|jpeg|png|gif|svg|ico|avif|woff|woff2|ttf|otf|pdf|mp4|webm|mov|m4v|ogg|ogv)",
       "headers": [
         {
           "key": "Cache-Control",
