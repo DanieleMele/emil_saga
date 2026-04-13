@@ -114,13 +114,15 @@
       overflow: hidden;
       background:
         linear-gradient(to right,
-          var(--dark-0) 28%,
-          rgba(6,13,11,0.75) 42%,
-          rgba(6,13,11,0.0) 58%
+          var(--dark-0) 10%,
+          rgba(6,13,11,0.45) 25%,
+          rgba(6,13,11,0.0) 45%
         ),
         linear-gradient(to bottom,
           var(--dark-0) 0%,
-          rgba(6,13,11,0.0) 8%,
+          rgba(6,13,11,0.85) 6%,
+          rgba(6,13,11,0.35) 14%,
+          rgba(6,13,11,0.0) 22%,
           rgba(6,13,11,0.0) 90%,
           var(--dark-0) 100%
         ),
@@ -128,13 +130,7 @@
         var(--dark-0);
     }
 
-    #hero-canvas {
-      position: absolute;
-      inset: 0;
-      pointer-events: none;
-    }
-
-    .hero-inner {
+.hero-inner {
       position: relative;
       z-index: 2;
       display: flex;
@@ -200,7 +196,7 @@
       .video-pip { display: none !important; }
     }
 
-    /* Top/bottom vignette */
+    /* Top/bottom vignette — long sfumato fade into next section */
     #video-intro::after {
       content: '';
       position: absolute;
@@ -211,7 +207,9 @@
         linear-gradient(to bottom,
           rgba(0,0,0,0.3) 0%,
           transparent 15%,
-          transparent 85%,
+          transparent 55%,
+          rgba(6,13,11,0.35) 75%,
+          rgba(6,13,11,0.75) 90%,
           var(--dark-0) 100%
         );
     }
@@ -2391,7 +2389,6 @@
 
   <!-- ── HERO ─────────────────────────────────────── -->
   <section id="hero">
-    <canvas id="hero-canvas"></canvas>
 
     <div class="hero-inner">
       <div class="book-widget">
@@ -2428,10 +2425,6 @@
       </div>
     </div>
 
-    <div class="scroll-hint">
-      <span>Scroll</span>
-      <div class="arrow"></div>
-    </div>
   </section>
 
   <!-- ── CINEMATIC QUOTE ──────────────────────────── -->
@@ -2925,75 +2918,7 @@
 
   <!-- ── SCRIPTS ───────────────────────────────────── -->
   <script>
-  // ── EMBER PARTICLE SYSTEM ───────────────────────────
-  (function() {
-    const canvas = document.getElementById('hero-canvas');
-    const ctx = canvas.getContext('2d');
-    let particles = [];
-    let W, H;
-
-    function resize() {
-      const rect = canvas.getBoundingClientRect();
-      W = canvas.width  = rect.width;
-      H = canvas.height = rect.height;
-    }
-
-    class Particle {
-      constructor() { this.reset(true); }
-
-      reset(initial) {
-        this.x = Math.random() * W;
-        this.y = initial ? Math.random() * H : H + 10;
-        this.radius = Math.random() * 2 + 0.4;
-        this.alpha = Math.random() * 0.6 + 0.1;
-        this.speed = Math.random() * 0.6 + 0.2;
-        this.drift = (Math.random() - 0.5) * 0.4;
-        this.pulse = Math.random() * Math.PI * 2;
-        this.pulseSpeed = Math.random() * 0.02 + 0.008;
-        const hue = Math.random() * 30 + 25;
-        const sat = Math.floor(Math.random() * 30 + 70);
-        const lig = Math.floor(Math.random() * 20 + 55);
-        this.color = `hsl(${hue},${sat}%,${lig}%)`;
-      }
-
-      update() {
-        this.y -= this.speed;
-        this.x += this.drift + Math.sin(this.pulse) * 0.3;
-        this.pulse += this.pulseSpeed;
-        this.alpha = (Math.sin(this.pulse) * 0.25 + 0.35) * Math.min(1, (H - this.y) / (H * 0.15));
-        if (this.y < -10) this.reset(false);
-      }
-
-      draw() {
-        ctx.save();
-        ctx.globalAlpha = Math.max(0, this.alpha);
-        ctx.shadowBlur = 8;
-        ctx.shadowColor = this.color;
-        ctx.fillStyle = this.color;
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-        ctx.fill();
-        ctx.restore();
-      }
-    }
-
-    function init() {
-      resize();
-      particles = Array.from({ length: 120 }, () => new Particle());
-    }
-
-    function loop() {
-      ctx.clearRect(0, 0, W, H);
-      particles.forEach(p => { p.update(); p.draw(); });
-      requestAnimationFrame(loop);
-    }
-
-    window.addEventListener('resize', resize);
-    init();
-    loop();
-  })();
-
-  // ── NAVIGATION ──────────────────────────────────────
+// ── NAVIGATION ──────────────────────────────────────
   const nav = document.getElementById('nav');
   const navLinks = document.getElementById('nav-links');
   const mobileToggle = document.getElementById('mobile-toggle');
