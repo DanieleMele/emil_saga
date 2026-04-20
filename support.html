@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" sizes="48x48" href="/book/favicon-48.png" />
+  <link rel="icon" type="image/webp" sizes="32x32" href="/book/favicon-32.webp" />
+  <link rel="icon" type="image/webp" sizes="256x256" href="/book/favicon.webp" />
+  <link rel="apple-touch-icon" href="/book/favicon-180.webp" />
+  <title>Support – Emil Saga App</title>
+  <meta name="description" content="Support und Hilfe für die Emil Saga App. Kontaktiere uns bei Fragen oder Problemen." />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://emilsaga.ch/support" />
+
+  <!-- Fonts: same self-hosted set as main site -->
+  <link rel="preload" href="/fonts/cinzeldecorative-400.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="preload" href="/fonts/crimsontext-400.woff2" as="font" type="font/woff2" crossorigin />
+  <style>
+    @font-face{font-family:Cinzel;font-style:normal;font-weight:400;font-display:swap;src:url('/fonts/cinzel-400.woff2') format('woff2')}
+    @font-face{font-family:Cinzel;font-style:normal;font-weight:600;font-display:swap;src:url('/fonts/cinzel-600.woff2') format('woff2')}
+    @font-face{font-family:Cinzel;font-style:normal;font-weight:700;font-display:swap;src:url('/fonts/cinzel-700.woff2') format('woff2')}
+    @font-face{font-family:'Cinzel Decorative';font-style:normal;font-weight:400;font-display:swap;src:url('/fonts/cinzeldecorative-400.woff2') format('woff2')}
+    @font-face{font-family:'Crimson Text';font-style:normal;font-weight:400;font-display:swap;src:url('/fonts/crimsontext-400.woff2') format('woff2')}
+    @font-face{font-family:'Crimson Text';font-style:italic;font-weight:400;font-display:swap;src:url('/fonts/crimsontext-400i.woff2') format('woff2')}
+    @font-face{font-family:'Crimson Text';font-style:normal;font-weight:600;font-display:swap;src:url('/fonts/crimsontext-600.woff2') format('woff2')}
+
+    :root {
+      --gold: #c9a84c;
+      --gold-light: #e8c96a;
+      --gold-dim: #8a6e2e;
+      --dark-0: #060d0b;
+      --dark-1: #0a1410;
+      --dark-2: #0f1e18;
+      --dark-3: #172b22;
+      --green-mid: #1e3b2e;
+      --text-main: #e2d9c8;
+      --text-muted: #9a9080;
+      --ember: #c85a20;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { background: var(--dark-0); }
+
+    body {
+      background-color: var(--dark-0);
+      color: var(--text-main);
+      font-family: 'Crimson Text', Georgia, serif;
+      font-size: 18px;
+      line-height: 1.75;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* noise overlay */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      opacity: .04;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      background-size: 200px 200px;
+    }
+
+    a { color: var(--gold); text-decoration: none; transition: color .2s; }
+    a:hover { color: var(--gold-light); }
+    a:focus-visible { outline: 2px solid var(--gold-light); outline-offset: 3px; }
+
+    /* ── NAV ─────────────────────────────── */
+    nav {
+      position: relative;
+      z-index: 10;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.25rem 2rem;
+      background: rgba(6, 13, 11, .97);
+      border-bottom: 1px solid rgba(201, 168, 76, .1);
+    }
+
+    .nav-logo {
+      font-family: 'Cinzel Decorative', serif;
+      font-size: 1.3rem;
+      color: var(--gold);
+      text-decoration: none;
+      letter-spacing: .03em;
+    }
+    .nav-logo:hover { color: var(--gold-light); }
+
+    .nav-back {
+      font-family: Cinzel, serif;
+      font-size: .78rem;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: .5rem;
+      transition: color .2s;
+    }
+    .nav-back:hover { color: var(--gold-light); }
+
+    /* ── MAIN ────────────────────────────── */
+    main {
+      position: relative;
+      z-index: 1;
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 4rem 1.5rem;
+      background:
+        radial-gradient(ellipse 60% 50% at 50% 40%, rgba(30, 59, 46, .3) 0, transparent 70%),
+        var(--dark-0);
+    }
+
+    .support-container {
+      max-width: 640px;
+      width: 100%;
+    }
+
+    /* ── HEADER ──────────────────────────── */
+    .section-label {
+      font-family: Cinzel, serif;
+      font-size: .78rem;
+      letter-spacing: .3em;
+      text-transform: uppercase;
+      color: var(--gold-dim);
+      margin-bottom: .75rem;
+      text-align: center;
+    }
+
+    .section-title {
+      font-family: Cinzel, serif;
+      font-size: clamp(1.8rem, 4vw, 2.6rem);
+      font-weight: 600;
+      letter-spacing: -.02em;
+      color: var(--gold-light);
+      margin-bottom: 1rem;
+      text-align: center;
+    }
+
+    .section-divider {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      margin: 1rem auto 2.5rem;
+      width: 220px;
+    }
+    .section-divider span {
+      width: 6px;
+      height: 6px;
+      background: var(--gold);
+      transform: rotate(45deg);
+      display: inline-block;
+    }
+    .section-divider::before,
+    .section-divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+    }
+    .section-divider::before { background: linear-gradient(to right, transparent, var(--gold-dim)); }
+    .section-divider::after { background: linear-gradient(to left, transparent, var(--gold-dim)); }
+
+    /* ── CONTENT ─────────────────────────── */
+    .support-intro {
+      text-align: center;
+      font-size: 1.1rem;
+      color: var(--text-muted);
+      line-height: 1.85;
+      margin-bottom: 3rem;
+    }
+
+    .support-card {
+      padding: 2rem 2.5rem;
+      background: rgba(255, 255, 255, .02);
+      border: 1px solid rgba(201, 168, 76, .15);
+      border-top: 2px solid var(--gold);
+      margin-bottom: 1.5rem;
+    }
+
+    .support-card h3 {
+      font-family: Cinzel, serif;
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--gold);
+      letter-spacing: .05em;
+      margin-bottom: .75rem;
+      display: flex;
+      align-items: center;
+      gap: .6rem;
+    }
+
+    .support-card h3 .icon {
+      width: 28px;
+      height: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(201, 168, 76, .12);
+      border-radius: 50%;
+      font-size: .9rem;
+      flex-shrink: 0;
+    }
+
+    .support-card p {
+      font-size: 1rem;
+      color: var(--text-muted);
+      line-height: 1.7;
+    }
+
+    .support-card a {
+      color: var(--gold);
+      text-decoration: underline;
+      text-decoration-color: rgba(201, 168, 76, .3);
+      text-underline-offset: 3px;
+      transition: color .2s, text-decoration-color .2s;
+    }
+    .support-card a:hover {
+      color: var(--gold-light);
+      text-decoration-color: var(--gold-light);
+    }
+
+    .support-note {
+      text-align: center;
+      font-family: Cinzel, serif;
+      font-size: .75rem;
+      letter-spacing: .12em;
+      color: var(--text-muted);
+      opacity: .7;
+      margin-top: 2rem;
+    }
+
+    /* ── FOOTER ──────────────────────────── */
+    footer {
+      position: relative;
+      z-index: 1;
+      padding: 2.5rem 1.5rem 2rem;
+      text-align: center;
+      border-top: 1px solid rgba(201, 168, 76, .1);
+      background: var(--dark-0);
+    }
+
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      margin-bottom: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .footer-links a {
+      font-family: Cinzel, serif;
+      font-size: .72rem;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+    .footer-links a:hover { color: var(--gold-light); }
+
+    .footer-copy {
+      font-size: .85rem;
+      color: var(--text-muted);
+      opacity: .5;
+    }
+
+    @media (max-width: 500px) {
+      .support-card { padding: 1.5rem 1.25rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="/" class="nav-logo">Emil Saga</a>
+    <a href="/" class="nav-back">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>
+      Zurück
+    </a>
+  </nav>
+
+  <main>
+    <div class="support-container">
+      <p class="section-label">App Support</p>
+      <h1 class="section-title">Emil Saga</h1>
+      <div class="section-divider"><span></span></div>
+
+      <p class="support-intro">
+        Brauchst du Hilfe mit der <strong>Emil Saga</strong> App?
+        Wir helfen dir gerne weiter.
+      </p>
+
+      <div class="support-card">
+        <h3><span class="icon">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        </span>Kontakt</h3>
+        <p>
+          Bei Fragen, Problemen oder Feedback erreichst du uns per E-Mail unter
+          <a href="mailto:danielemele90@hotmail.com">danielemele90@hotmail.com</a>.
+          Wir antworten in der Regel innerhalb von 48 Stunden.
+        </p>
+      </div>
+
+      <div class="support-card">
+        <h3><span class="icon">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        </span>Häufige Fragen</h3>
+        <p>
+          <strong>Die App stürzt ab oder reagiert nicht:</strong> Stelle sicher, dass du die neueste Version installiert hast. Starte die App oder dein Gerät neu.
+        </p>
+        <br />
+        <p>
+          <strong>Inhalte werden nicht geladen:</strong> Prüfe deine Internetverbindung und versuche es erneut.
+        </p>
+        <br />
+        <p>
+          <strong>Sonstiges Problem:</strong> Beschreibe das Problem so genau wie möglich und schicke uns eine Nachricht an die oben genannte E-Mail-Adresse.
+        </p>
+      </div>
+
+      <div class="support-card">
+        <h3><span class="icon">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </span>Datenschutz</h3>
+        <p>
+          Informationen zum Datenschutz findest du auf unserer
+          <a href="/#datenschutz">Datenschutzseite</a>.
+        </p>
+      </div>
+
+      <p class="support-note">Emil Saga &middot; Daniele Mele &middot; Riverfield Verlag</p>
+    </div>
+  </main>
+
+  <footer>
+    <div class="footer-links">
+      <a href="/">Startseite</a>
+      <a href="/#impressum">Impressum</a>
+      <a href="/#datenschutz">Datenschutz</a>
+    </div>
+    <p class="footer-copy">&copy; 2026 Daniele Mele Freelancer &middot; Riverfield Verlag &middot; Alle Rechte vorbehalten</p>
+  </footer>
+
+</body>
+</html>
