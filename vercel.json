@@ -2,7 +2,8 @@
   "buildCommand": "node build-alt-domain.mjs",
   "outputDirectory": ".",
   "rewrites": [
-    { "source": "/leseprobe", "destination": "/leseprobe.html" }
+    { "source": "/leseprobe", "destination": "/leseprobe.html" },
+    { "source": "/support", "destination": "/support.html" }
   ],
   "headers": [
     {
