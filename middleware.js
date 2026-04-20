@@ -1,7 +1,7 @@
 import { rewrite, next } from '@vercel/edge';
 
 export const config = {
-  matcher: ['/', '/leseprobe'],
+  matcher: ['/', '/leseprobe', '/support'],
 };
 
 export default function middleware(request) {
@@ -15,6 +15,9 @@ export default function middleware(request) {
   }
   if (url.pathname === '/leseprobe') {
     return rewrite(new URL('/leseprobe-de.html', request.url));
+  }
+  if (url.pathname === '/support') {
+    return rewrite(new URL('/support-de.html', request.url));
   }
   return next();
 }
