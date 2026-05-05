@@ -403,9 +403,11 @@
     .ig-handle{font-family:Cinzel,serif;font-size:.78rem;letter-spacing:.18em;color:var(--gold);text-decoration:none;display:inline-block;margin-top:.5rem;border-bottom:1px solid rgba(201,168,76,.3);padding-bottom:2px;transition:color .2s,border-color .2s}
     .ig-handle:hover{color:var(--gold-light);border-color:var(--gold-light)}
     .ig-handle:focus-visible{outline:2px solid var(--gold-light);outline-offset:3px}
-    .ig-marquee-wrap{position:relative;margin-top:3rem;overflow:hidden;mask-image:linear-gradient(to right,transparent 0,#000 6%,#000 94%,transparent 100%);-webkit-mask-image:linear-gradient(to right,transparent 0,#000 6%,#000 94%,transparent 100%)}
-    .ig-marquee{display:flex;gap:1rem;width:max-content;animation:igMarquee 80s linear infinite;will-change:transform}
-    .ig-marquee-wrap:hover .ig-marquee,.ig-marquee-wrap:focus-within .ig-marquee{animation-play-state:paused}
+    .ig-marquee-wrap{position:relative;margin-top:3rem;overflow-x:auto;overflow-y:hidden;scrollbar-width:none;-ms-overflow-style:none;cursor:grab;mask-image:linear-gradient(to right,transparent 0,#000 6%,#000 94%,transparent 100%);-webkit-mask-image:linear-gradient(to right,transparent 0,#000 6%,#000 94%,transparent 100%);overscroll-behavior-x:contain}
+    .ig-marquee-wrap::-webkit-scrollbar{display:none;width:0;height:0}
+    .ig-marquee-wrap.is-dragging{cursor:grabbing;user-select:none;-webkit-user-select:none}
+    .ig-card img{-webkit-user-drag:none;user-select:none}
+    .ig-marquee{display:flex;gap:1rem;width:max-content;will-change:transform}
     .ig-card{flex-shrink:0;width:240px;height:240px;display:block;overflow:hidden;position:relative;border:1px solid rgba(201,168,76,.18);background:var(--dark-2);text-decoration:none;transition:transform .3s cubic-bezier(.34,1.56,.64,1),border-color .3s,box-shadow .3s}
     .ig-card::after{content:'';position:absolute;inset:0;background:linear-gradient(to top,rgba(6,13,11,.6) 0,transparent 35%);opacity:0;transition:opacity .3s;pointer-events:none;z-index:1}
     .ig-card:hover{transform:translateY(-4px);border-color:rgba(201,168,76,.55);box-shadow:0 14px 40px rgba(0,0,0,.45),0 0 30px rgba(201,168,76,.1)}
@@ -417,9 +419,7 @@
     .ig-card:hover .ig-icon{opacity:.95;transform:translateY(0)}
     .ig-state{display:flex;align-items:center;justify-content:center;font-family:Cinzel,serif;font-size:.72rem;letter-spacing:.22em;text-transform:uppercase;color:var(--text-muted);height:240px;min-width:100vw;padding:0 1.5rem;text-align:center}
     .ig-cta-wrap{display:flex;justify-content:center;margin-top:3rem;padding:0 1.5rem}
-    @keyframes igMarquee{from{transform:translateX(0)}to{transform:translateX(calc(-50% - .5rem))}}
-    @media (prefers-reduced-motion:reduce){.ig-marquee{animation:none}}
-    @media (max-width:700px){#instagram{padding:5rem 0}.ig-card{width:180px;height:180px}.ig-marquee{gap:.75rem;animation-duration:60s}.ig-state{height:180px}@keyframes igMarquee{from{transform:translateX(0)}to{transform:translateX(calc(-50% - .375rem))}}}
+    @media (max-width:700px){#instagram{padding:5rem 0}.ig-card{width:180px;height:180px}.ig-marquee{gap:.75rem}.ig-state{height:180px}}
   </style>
   <section id="instagram">
     <div class="section-header fade-in">
@@ -469,11 +469,82 @@
             const src = (p.sizes && (p.sizes.medium && p.sizes.medium.mediaUrl || p.sizes.small && p.sizes.small.mediaUrl)) || p.thumbnailUrl || p.mediaUrl;
             const link = p.permalink || 'https://www.instagram.com/danielemeleautor/';
             const alt = ((p.prunedCaption || '').trim().slice(0,120)) || 'Instagram-Post von @danielemeleautor';
-            return '<a class="ig-card" role="listitem" href="' + escAttr(link) + '" target="_blank" rel="noopener noreferrer" aria-label="' + escAttr(alt) + '"><img src="' + escAttr(src) + '" alt="' + escAttr(alt) + '" loading="lazy" />' + igIcon + '</a>';
+            return '<a class="ig-card" role="listitem" href="' + escAttr(link) + '" target="_blank" rel="noopener noreferrer" aria-label="' + escAttr(alt) + '" draggable="false"><img src="' + escAttr(src) + '" alt="' + escAttr(alt) + '" loading="lazy" draggable="false" />' + igIcon + '</a>';
           }).join('');
           marquee.innerHTML = cards + cards;
+          setupMarquee();
         })
         .catch(() => { marquee.innerHTML = fallback; });
+
+      function setupMarquee(){
+        const wrap = marquee.parentElement;
+        if (!wrap || wrap._igInit) return;
+        wrap._igInit = true;
+        const speed = 0.7; // px per frame at ~60fps ≈ 42px/s
+        const resumeDelay = 1500;
+        let paused = false, resumeTimer = null, pendingDrag = false, dragging = false, dragMoved = 0, startX = 0, startScroll = 0, activePointerId = null;
+
+        function pause(){ paused = true; if (resumeTimer) { clearTimeout(resumeTimer); resumeTimer = null; } }
+        function scheduleResume(){ if (resumeTimer) clearTimeout(resumeTimer); resumeTimer = setTimeout(() => { paused = false; }, resumeDelay); }
+
+        function tick(){
+          if (!paused) {
+            const half = marquee.scrollWidth / 2;
+            if (half > 0) {
+              if (wrap.scrollLeft >= half) wrap.scrollLeft -= half;
+              else if (wrap.scrollLeft < 0) wrap.scrollLeft += half;
+              wrap.scrollLeft += speed;
+            }
+          }
+          requestAnimationFrame(tick);
+        }
+        requestAnimationFrame(tick);
+
+        wrap.addEventListener('pointerdown', e => {
+          if (e.pointerType === 'mouse' && e.button !== 0) return;
+          if (e.pointerType === 'touch') return; // let native touch scroll handle it
+          pendingDrag = true; dragging = false; dragMoved = 0;
+          startX = e.clientX; startScroll = wrap.scrollLeft;
+          activePointerId = e.pointerId;
+        });
+        wrap.addEventListener('pointermove', e => {
+          if (!pendingDrag || e.pointerId !== activePointerId) return;
+          const dx = e.clientX - startX;
+          dragMoved = Math.max(dragMoved, Math.abs(dx));
+          if (!dragging && dragMoved > 4) {
+            dragging = true;
+            wrap.classList.add('is-dragging');
+            pause();
+            try { wrap.setPointerCapture(e.pointerId); } catch(_) {}
+          }
+          if (dragging) wrap.scrollLeft = startScroll - dx;
+        });
+        function endDrag(e){
+          if (!pendingDrag) return;
+          pendingDrag = false;
+          if (dragging) {
+            dragging = false;
+            wrap.classList.remove('is-dragging');
+            try { wrap.releasePointerCapture(e.pointerId); } catch(_) {}
+            scheduleResume();
+          }
+          activePointerId = null;
+        }
+        wrap.addEventListener('pointerup', endDrag);
+        wrap.addEventListener('pointercancel', endDrag);
+
+        // Suppress click after a real drag so swiping doesn't open Instagram
+        marquee.addEventListener('click', e => {
+          if (dragMoved > 6) { e.preventDefault(); e.stopPropagation(); }
+        }, true);
+
+        // Wheel / native touch scroll: pause auto-scroll briefly
+        wrap.addEventListener('wheel', () => { pause(); scheduleResume(); }, { passive: true });
+        wrap.addEventListener('touchstart', () => { pause(); }, { passive: true });
+        wrap.addEventListener('touchend', () => { scheduleResume(); }, { passive: true });
+        wrap.addEventListener('focusin', pause);
+        wrap.addEventListener('focusout', scheduleResume);
+      }
     })();
   </script>
 
