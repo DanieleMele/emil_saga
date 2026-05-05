@@ -395,6 +395,88 @@
     </div>
   </section>
 
+  <!-- ── INSTAGRAM FEED ───────────────────────────── -->
+  <style>
+    #instagram{padding:7rem 0 8rem;background:radial-gradient(ellipse 60% 40% at 50% 25%,rgba(30,59,46,.28) 0,transparent 70%),var(--dark-1)}
+    #instagram .section-header{padding:0 1.5rem}
+    .ig-subtitle{font-family:'Crimson Text',serif;font-style:italic;font-size:1.05rem;color:var(--text-muted);max-width:540px;margin:1.25rem auto 0;line-height:1.7}
+    .ig-handle{font-family:Cinzel,serif;font-size:.78rem;letter-spacing:.18em;color:var(--gold);text-decoration:none;display:inline-block;margin-top:.5rem;border-bottom:1px solid rgba(201,168,76,.3);padding-bottom:2px;transition:color .2s,border-color .2s}
+    .ig-handle:hover{color:var(--gold-light);border-color:var(--gold-light)}
+    .ig-handle:focus-visible{outline:2px solid var(--gold-light);outline-offset:3px}
+    .ig-marquee-wrap{position:relative;margin-top:3rem;overflow:hidden;mask-image:linear-gradient(to right,transparent 0,#000 6%,#000 94%,transparent 100%);-webkit-mask-image:linear-gradient(to right,transparent 0,#000 6%,#000 94%,transparent 100%)}
+    .ig-marquee{display:flex;gap:1rem;width:max-content;animation:igMarquee 80s linear infinite;will-change:transform}
+    .ig-marquee-wrap:hover .ig-marquee,.ig-marquee-wrap:focus-within .ig-marquee{animation-play-state:paused}
+    .ig-card{flex-shrink:0;width:240px;height:240px;display:block;overflow:hidden;position:relative;border:1px solid rgba(201,168,76,.18);background:var(--dark-2);text-decoration:none;transition:transform .3s cubic-bezier(.34,1.56,.64,1),border-color .3s,box-shadow .3s}
+    .ig-card::after{content:'';position:absolute;inset:0;background:linear-gradient(to top,rgba(6,13,11,.6) 0,transparent 35%);opacity:0;transition:opacity .3s;pointer-events:none;z-index:1}
+    .ig-card:hover{transform:translateY(-4px);border-color:rgba(201,168,76,.55);box-shadow:0 14px 40px rgba(0,0,0,.45),0 0 30px rgba(201,168,76,.1)}
+    .ig-card:hover::after{opacity:1}
+    .ig-card:focus-visible{outline:2px solid var(--gold-light);outline-offset:3px}
+    .ig-card img{width:100%;height:100%;object-fit:cover;display:block;filter:saturate(.88) contrast(1.02);transition:filter .35s,transform .6s cubic-bezier(.22,1,.36,1)}
+    .ig-card:hover img{filter:saturate(1) contrast(1);transform:scale(1.04)}
+    .ig-card .ig-icon{position:absolute;top:.65rem;right:.65rem;width:22px;height:22px;color:var(--gold-light);opacity:0;transform:translateY(-4px);transition:opacity .3s,transform .3s;filter:drop-shadow(0 2px 4px rgba(0,0,0,.5));z-index:2}
+    .ig-card:hover .ig-icon{opacity:.95;transform:translateY(0)}
+    .ig-state{display:flex;align-items:center;justify-content:center;font-family:Cinzel,serif;font-size:.72rem;letter-spacing:.22em;text-transform:uppercase;color:var(--text-muted);height:240px;min-width:100vw;padding:0 1.5rem;text-align:center}
+    .ig-cta-wrap{display:flex;justify-content:center;margin-top:3rem;padding:0 1.5rem}
+    @keyframes igMarquee{from{transform:translateX(0)}to{transform:translateX(calc(-50% - .5rem))}}
+    @media (prefers-reduced-motion:reduce){.ig-marquee{animation:none}}
+    @media (max-width:700px){#instagram{padding:5rem 0}.ig-card{width:180px;height:180px}.ig-marquee{gap:.75rem;animation-duration:60s}.ig-state{height:180px}@keyframes igMarquee{from{transform:translateX(0)}to{transform:translateX(calc(-50% - .375rem))}}}
+  </style>
+  <section id="instagram">
+    <div class="section-header fade-in">
+      <p class="section-label">Hinter den Kulissen</p>
+      <h2 class="section-title">Auf Instagram</h2>
+      <div class="section-divider"><span></span></div>
+      <p class="ig-subtitle">Eindrücke aus der Welt der Emil Saga und des Autors — regelmäßig aktualisiert.</p>
+      <a href="https://www.instagram.com/danielemeleautor/" target="_blank" rel="noopener noreferrer" class="ig-handle">@danielemeleautor</a>
+    </div>
+
+    <div class="ig-marquee-wrap fade-in">
+      <div class="ig-marquee" id="ig-marquee" role="list" aria-label="Instagram-Galerie">
+        <div class="ig-state">Lade Instagram-Posts…</div>
+      </div>
+    </div>
+
+    <div class="ig-cta-wrap fade-in">
+      <a href="https://www.instagram.com/danielemeleautor/" target="_blank" rel="noopener noreferrer" class="btn-ghost">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" width="16" height="16" aria-hidden="true">
+          <rect x="2" y="2" width="20" height="20" rx="5"/>
+          <circle cx="12" cy="12" r="5"/>
+          <circle cx="17.5" cy="6.5" r="1.2" fill="currentColor" stroke="none"/>
+        </svg>
+        Auf Instagram folgen
+      </a>
+    </div>
+  </section>
+  <script>
+    (function(){
+      // ── BEHOLD.SO SETUP ────────────────────────────
+      // 1. Sign up free at https://behold.so
+      // 2. Connect Instagram @danielemeleautor
+      // 3. Create a feed, copy the feed ID, paste it below
+      const BEHOLD_FEED_ID = '3rveS0VLFvTG4eLCnUcl';
+      const marquee = document.getElementById('ig-marquee');
+      if (!marquee) return;
+      const fallback = '<div class="ig-state">Folge <a class="ig-handle" href="https://www.instagram.com/danielemeleautor/" target="_blank" rel="noopener noreferrer" style="margin-left:.5em">@danielemeleautor</a> für aktuelle Posts</div>';
+      if (!BEHOLD_FEED_ID || BEHOLD_FEED_ID === 'YOUR_BEHOLD_FEED_ID_HERE') { marquee.innerHTML = fallback; return; }
+      const escAttr = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+      const igIcon = '<svg class="ig-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1.2" fill="currentColor" stroke="none"/></svg>';
+      fetch('https://feeds.behold.so/' + BEHOLD_FEED_ID)
+        .then(r => r.ok ? r.json() : Promise.reject())
+        .then(data => {
+          const posts = (data && data.posts || []).slice().sort((a,b) => new Date(b.timestamp) - new Date(a.timestamp)).slice(0, 12);
+          if (!posts.length) { marquee.innerHTML = fallback; return; }
+          const cards = posts.map(p => {
+            const src = (p.sizes && (p.sizes.medium && p.sizes.medium.mediaUrl || p.sizes.small && p.sizes.small.mediaUrl)) || p.thumbnailUrl || p.mediaUrl;
+            const link = p.permalink || 'https://www.instagram.com/danielemeleautor/';
+            const alt = ((p.prunedCaption || '').trim().slice(0,120)) || 'Instagram-Post von @danielemeleautor';
+            return '<a class="ig-card" role="listitem" href="' + escAttr(link) + '" target="_blank" rel="noopener noreferrer" aria-label="' + escAttr(alt) + '"><img src="' + escAttr(src) + '" alt="' + escAttr(alt) + '" loading="lazy" />' + igIcon + '</a>';
+          }).join('');
+          marquee.innerHTML = cards + cards;
+        })
+        .catch(() => { marquee.innerHTML = fallback; });
+    })();
+  </script>
+
   <!-- ── TRILOGY SECTION ──────────────────────────── -->
   <section id="trilogie">
     <div class="trilogy-container">
@@ -525,7 +607,7 @@
           <span class="shop-arrow">→</span>
         </a>
 
-        <a href="https://www.thalia.de" target="_blank" rel="noopener noreferrer" class="shop-card">
+        <a href="https://www.thalia.de/shop/home/artikeldetails/A1078077223" target="_blank" rel="noopener noreferrer" class="shop-card">
           <div class="shop-thumb"><img src="book/DM_Cover_FINAL-thumb.webp" alt="Cover" width="160" height="249" loading="lazy" /></div>
           <div class="shop-info">
             <div class="shop-name">Thalia</div>
