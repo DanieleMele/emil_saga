@@ -2,7 +2,7 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
         xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://emilsaga.ch/</loc>
+    <loc>https://emilsaga.de/</loc>
     <xhtml:link rel="alternate" hreflang="de-CH" href="https://emilsaga.ch/" />
     <xhtml:link rel="alternate" hreflang="de-DE" href="https://emilsaga.de/" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://emilsaga.ch/" />
@@ -11,7 +11,7 @@
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://emilsaga.ch/leseprobe</loc>
+    <loc>https://emilsaga.de/leseprobe</loc>
     <xhtml:link rel="alternate" hreflang="de-CH" href="https://emilsaga.ch/leseprobe" />
     <xhtml:link rel="alternate" hreflang="de-DE" href="https://emilsaga.de/leseprobe" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://emilsaga.ch/leseprobe" />
@@ -20,7 +20,7 @@
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://emilsaga.ch/support</loc>
+    <loc>https://emilsaga.de/support</loc>
     <lastmod>2026-05-10</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.4</priority>
