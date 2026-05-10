@@ -67,7 +67,25 @@
           "inLanguage": "de",
           "potentialAction": {
             "@type": "ReadAction",
-            "target": "https://emilsaga.ch/leseprobe"
+            "target": {
+              "@type": "EntryPoint",
+              "urlTemplate": "https://emilsaga.ch/leseprobe",
+              "actionPlatform": [
+                "http://schema.org/DesktopWebPlatform",
+                "http://schema.org/MobileWebPlatform",
+                "http://schema.org/IOSPlatform",
+                "http://schema.org/AndroidPlatform"
+              ]
+            },
+            "expectsAcceptanceOf": {
+              "@type": "Offer",
+              "category": "free",
+              "eligibleRegion": [
+                { "@type": "Country", "name": "DE" },
+                { "@type": "Country", "name": "CH" },
+                { "@type": "Country", "name": "AT" }
+              ]
+            }
           }
         },
         "offers": [

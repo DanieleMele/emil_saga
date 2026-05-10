@@ -35,6 +35,10 @@ function makeDe(src) {
       '"target": "https://emilsaga.de/'
     )
     .replace(
+      /"urlTemplate": "https:\/\/emilsaga\.ch\//g,
+      '"urlTemplate": "https://emilsaga.de/'
+    )
+    .replace(
       /"logo": "https:\/\/emilsaga\.ch\/book\//g,
       '"logo": "https://emilsaga.de/book/'
     )
