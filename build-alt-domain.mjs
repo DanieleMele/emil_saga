@@ -26,7 +26,27 @@ function makeDe(src) {
       /"url": "https:\/\/emilsaga\.ch\//g,
       '"url": "https://emilsaga.de/'
     )
-    .replace(/content="de_CH"/g, 'content="de_DE"');
+    .replace(
+      /"@id": "https:\/\/emilsaga\.ch\//g,
+      '"@id": "https://emilsaga.de/'
+    )
+    .replace(
+      /"target": "https:\/\/emilsaga\.ch\//g,
+      '"target": "https://emilsaga.de/'
+    )
+    .replace(
+      /"logo": "https:\/\/emilsaga\.ch\/book\//g,
+      '"logo": "https://emilsaga.de/book/'
+    )
+    .replace(/"inLanguage": "de-CH"/g, '"inLanguage": "de-DE"')
+    .replace(
+      /<meta property="og:locale" content="de_CH"/g,
+      '<meta property="og:locale" content="de_DE"'
+    )
+    .replace(
+      /<meta property="og:locale:alternate" content="de_DE"/g,
+      '<meta property="og:locale:alternate" content="de_CH"'
+    );
 }
 
 const pages = [
