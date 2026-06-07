@@ -3,7 +3,9 @@
   "outputDirectory": ".",
   "rewrites": [
     { "source": "/leseprobe", "destination": "/leseprobe.html" },
-    { "source": "/support", "destination": "/support.html" }
+    { "source": "/support", "destination": "/support.html" },
+    { "source": "/mitmachen", "destination": "/mitmachen.html" },
+    { "source": "/admin", "destination": "/admin.html" }
   ],
   "headers": [
     {

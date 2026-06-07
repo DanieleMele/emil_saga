@@ -57,6 +57,7 @@ const pages = [
   { src: 'index.html', out: 'index-de.html' },
   { src: 'leseprobe.html', out: 'leseprobe-de.html' },
   { src: 'support.html', out: 'support-de.html' },
+  { src: 'mitmachen.html', out: 'mitmachen-de.html' },
 ];
 
 for (const { src, out } of pages) {
