@@ -92,28 +92,6 @@ export default async function handler(req, res) {
         return res.status(200).json({ ok: true });
       }
 
-      if (action === 'draw') {
-        const metas = (await Promise.all(blobs.map(readMeta))).filter(Boolean);
-        const approved = metas.filter((m) => m.status === 'approved');
-        if (!approved.length) {
-          return res.status(400).json({ error: 'Keine freigegebenen Einsendungen vorhanden.' });
-        }
-        const winner = approved[Math.floor(Math.random() * approved.length)];
-        await Promise.all(
-          metas.map(async (m) => {
-            const shouldWin = m.id === winner.id;
-            if (Boolean(m.winner) !== shouldWin) {
-              m.winner = shouldWin;
-              await put(`meta/${m.id}.json`, JSON.stringify(m), metaPutOpts);
-            }
-          })
-        );
-        return res.status(200).json({
-          ok: true,
-          winner: { id: winner.id, name: winner.name, photoUrl: winner.photoUrl },
-        });
-      }
-
       if (action === 'clearWinner') {
         const metas = (await Promise.all(blobs.map(readMeta))).filter(Boolean);
         await Promise.all(

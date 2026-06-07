@@ -83,7 +83,6 @@
       <span class="stat">Freigegeben: <b id="stat-approved">0</b></span>
       <span class="spacer"></span>
       <button class="btn btn-ghost" id="refresh-btn">Aktualisieren</button>
-      <button class="btn btn-gold" id="draw-btn">🎲 Gewinner auslosen</button>
       <button class="btn btn-danger hidden" id="clear-win-btn">Gewinner zurücksetzen</button>
     </div>
 
@@ -225,15 +224,6 @@
     });
 
     document.getElementById('refresh-btn').addEventListener('click', load);
-
-    document.getElementById('draw-btn').addEventListener('click', async () => {
-      if (!confirm('Zufällig einen Gewinner unter allen freigegebenen Einsendungen auslosen?')) return;
-      try {
-        const data = await api('POST', { action: 'draw' });
-        toast('🎉 Gewinner: ' + (data.winner ? data.winner.name : ''));
-        await load();
-      } catch (err) { toast(err.message); }
-    });
 
     document.getElementById('clear-win-btn').addEventListener('click', async () => {
       if (!confirm('Aktuellen Gewinner zurücksetzen?')) return;
