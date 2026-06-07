@@ -35,6 +35,33 @@ const metaPutOpts = {
   token: blobToken(),
 };
 
+// The single aggregated index that the public gallery reads (O(1) for
+// visitors), derived from the per-entry meta files so it can't drift. Only the
+// admin writes it, so there's no write contention.
+async function writeApprovedIndex(metas) {
+  const approved = metas
+    .filter((m) => m.status === 'approved')
+    .sort(
+      (a, b) =>
+        (b.winner ? 1 : 0) - (a.winner ? 1 : 0) ||
+        new Date(b.createdAt) - new Date(a.createdAt)
+    )
+    .map((m) => ({
+      id: m.id,
+      name: m.name,
+      photoUrl: m.photoUrl,
+      winner: !!m.winner,
+      createdAt: m.createdAt,
+    }));
+  await put('index/approved.json', JSON.stringify(approved), metaPutOpts);
+}
+
+async function rebuildApprovedIndex() {
+  const { blobs } = await list({ prefix: 'meta/', token: blobToken() });
+  const metas = (await Promise.all(blobs.map(readMeta))).filter(Boolean);
+  await writeApprovedIndex(metas);
+}
+
 export default async function handler(req, res) {
   if (!authorized(req)) {
     return res.status(401).json({ error: 'Nicht autorisiert' });
@@ -47,6 +74,8 @@ export default async function handler(req, res) {
       const metas = (await Promise.all(blobs.map(readMeta)))
         .filter(Boolean)
         .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+      // Self-heal the public index from the source of truth on each dashboard load.
+      await writeApprovedIndex(metas).catch(() => {});
       return res.status(200).json({ entries: metas });
     }
 
@@ -64,11 +93,13 @@ export default async function handler(req, res) {
         if (action === 'reject') {
           await del(meta.photoUrl, { token: blobToken() }).catch(() => {});
           await del(metaBlob.url, { token: blobToken() }).catch(() => {});
+          await rebuildApprovedIndex();
           return res.status(200).json({ ok: true });
         }
 
         meta.status = 'approved';
         await put(`meta/${id}.json`, JSON.stringify(meta), metaPutOpts);
+        await rebuildApprovedIndex();
         return res.status(200).json({ ok: true });
       }
 
@@ -90,6 +121,7 @@ export default async function handler(req, res) {
             }
           })
         );
+        await rebuildApprovedIndex();
         return res.status(200).json({ ok: true });
       }
 
@@ -103,6 +135,7 @@ export default async function handler(req, res) {
               await put(`meta/${m.id}.json`, JSON.stringify(m), metaPutOpts);
             })
         );
+        await rebuildApprovedIndex();
         return res.status(200).json({ ok: true });
       }
 

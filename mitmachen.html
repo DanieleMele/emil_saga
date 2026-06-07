@@ -275,6 +275,8 @@
 
     <div class="form-shell fade-in">
       <form class="mit-form" id="mit-form" novalidate>
+        <!-- Honeypot: hidden from humans; bots that fill it are silently dropped. -->
+        <input type="text" id="mit-website" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" class="visually-hidden" />
         <div class="mit-field">
           <span class="dz-label">Dein Foto mit dem Buch</span>
           <div class="dropzone" id="dropzone" tabindex="0" role="button" aria-label="Foto auswählen oder hierher ziehen">
@@ -461,7 +463,7 @@
         const res = await fetch('/api/submit', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ name: nameInput.value.trim(), consent: true, image }),
+          body: JSON.stringify({ name: nameInput.value.trim(), consent: true, image, website: document.getElementById('mit-website').value }),
         });
         const data = await res.json().catch(() => ({}));
         if (!res.ok) throw new Error((data.error || 'Upload fehlgeschlagen.') + (data.detail ? ' — ' + data.detail : ''));

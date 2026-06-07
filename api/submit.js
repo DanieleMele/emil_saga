@@ -25,7 +25,13 @@ export default async function handler(req, res) {
   }
 
   try {
-    const { name, image, consent } = req.body || {};
+    const { name, image, consent, website } = req.body || {};
+
+    // Honeypot: humans never fill the hidden "website" field. Bots that do get
+    // a fake success (so they don't retry) and nothing is stored.
+    if (typeof website === 'string' && website.trim() !== '') {
+      return res.status(200).json({ ok: true });
+    }
 
     if (typeof name !== 'string' || name.trim().length < 2 || name.trim().length > 60) {
       return res.status(400).json({ error: 'Bitte gib einen gültigen Namen an (2–60 Zeichen).' });

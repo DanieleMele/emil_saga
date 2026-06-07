@@ -15,28 +15,23 @@ export default async function handler(req, res) {
   }
 
   try {
-    const { blobs } = await list({ prefix: 'meta/', token: blobToken() });
+    const token = blobToken();
 
-    const metas = await Promise.all(
-      blobs.map(async (b) => {
-        try {
-          // Cache-bust: Blob's CDN may serve a stale copy right after an overwrite.
-          const r = await fetch(`${b.url}?ts=${Date.now()}`, { cache: 'no-store' });
-          return r.ok ? await r.json() : null;
-        } catch {
-          return null;
-        }
-      })
-    );
-
-    const entries = metas
-      .filter((m) => m && m.status === 'approved')
-      .sort(
-        (a, b) =>
-          (b.winner ? 1 : 0) - (a.winner ? 1 : 0) ||
-          new Date(b.createdAt) - new Date(a.createdAt)
-      )
-      .map((m) => ({ name: m.name, photoUrl: m.photoUrl, winner: !!m.winner }));
+    // O(1): read the single aggregated index the admin maintains on approve.
+    // (Per-entry meta files remain the source of truth for safe parallel writes.)
+    const { blobs } = await list({ prefix: 'index/approved.json', token });
+    let entries = [];
+    if (blobs.length) {
+      const r = await fetch(`${blobs[0].url}?ts=${Date.now()}`, { cache: 'no-store' });
+      if (r.ok) {
+        const data = await r.json();
+        entries = (Array.isArray(data) ? data : []).map((m) => ({
+          name: m.name,
+          photoUrl: m.photoUrl,
+          winner: !!m.winner,
+        }));
+      }
+    }
 
     res.setHeader('Cache-Control', 'public, max-age=0, s-maxage=10, stale-while-revalidate=20');
     return res.status(200).json({ entries });
