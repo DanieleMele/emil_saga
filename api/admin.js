@@ -18,7 +18,8 @@ function blobToken() {
 
 async function readMeta(blob) {
   try {
-    const r = await fetch(blob.url, { cache: 'no-store' });
+    // Cache-bust: Blob's CDN may serve a stale copy right after an overwrite.
+    const r = await fetch(`${blob.url}?ts=${Date.now()}`, { cache: 'no-store' });
     return r.ok ? await r.json() : null;
   } catch {
     return null;

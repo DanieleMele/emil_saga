@@ -20,7 +20,8 @@ export default async function handler(req, res) {
     const metas = await Promise.all(
       blobs.map(async (b) => {
         try {
-          const r = await fetch(b.url, { cache: 'no-store' });
+          // Cache-bust: Blob's CDN may serve a stale copy right after an overwrite.
+          const r = await fetch(`${b.url}?ts=${Date.now()}`, { cache: 'no-store' });
           return r.ok ? await r.json() : null;
         } catch {
           return null;
@@ -37,7 +38,7 @@ export default async function handler(req, res) {
       )
       .map((m) => ({ name: m.name, photoUrl: m.photoUrl, winner: !!m.winner }));
 
-    res.setHeader('Cache-Control', 'public, max-age=0, s-maxage=30, stale-while-revalidate=60');
+    res.setHeader('Cache-Control', 'public, max-age=0, s-maxage=10, stale-while-revalidate=20');
     return res.status(200).json({ entries });
   } catch (err) {
     console.error('gallery error:', err);
