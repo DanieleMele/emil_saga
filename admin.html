@@ -128,7 +128,7 @@
       });
       if (res.status === 401) { throw new Error('unauthorized'); }
       const data = await res.json().catch(() => ({}));
-      if (!res.ok) throw new Error((data.error || 'Fehler') + (data.detail ? ' — ' + data.detail : ''));
+      if (!res.ok) throw new Error(data.error || 'Fehler');
       return data;
     }
 
