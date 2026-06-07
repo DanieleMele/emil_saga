@@ -236,7 +236,7 @@
       </p>
       <p class="mit-deadline" id="mit-deadline">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15.5 14"/></svg>
-        <span id="mit-deadline-text">Einsendeschluss: <b>31.&nbsp;August&nbsp;2026</b></span>
+        <span id="mit-deadline-text">Einsendeschluss: <b>30.&nbsp;September&nbsp;2026</b></span>
       </p>
     </div>
   </section>
@@ -320,7 +320,7 @@
       <div class="mit-closed" id="mit-closed">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
         <h3>Die Einsendephase ist beendet</h3>
-        <p>Vielen Dank an alle, die mitgemacht haben! Der Einsendeschluss war der 31.&nbsp;August&nbsp;2026. Die Galerie unten zeigt alle Teilnehmenden – schau vorbei, ob du dabei bist.</p>
+        <p>Vielen Dank an alle, die mitgemacht haben! Der Einsendeschluss war der 30.&nbsp;September&nbsp;2026. Die Galerie unten zeigt alle Teilnehmenden – schau vorbei, ob du dabei bist.</p>
       </div>
 
       <div class="mit-success" id="mit-success">
@@ -382,8 +382,8 @@
     document.querySelectorAll('.fade-in').forEach((el) => io.observe(el));
 
     // ── Deadline (Einsendeschluss) ──
-    // End of 31 August 2026, Swiss local time.
-    const DEADLINE = new Date('2026-08-31T23:59:59+02:00');
+    // End of 30 September 2026, Swiss local time.
+    const DEADLINE = new Date('2026-09-30T23:59:59+02:00');
     const submissionsClosed = Date.now() > DEADLINE.getTime();
 
     // ── Upload form ──
@@ -408,7 +408,7 @@
       document.getElementById('mit-closed').classList.add('show');
       const dl = document.getElementById('mit-deadline');
       dl.classList.add('closed');
-      document.getElementById('mit-deadline-text').innerHTML = 'Einsendeschluss vorbei · <b>31.&nbsp;August&nbsp;2026</b>';
+      document.getElementById('mit-deadline-text').innerHTML = 'Einsendeschluss vorbei · <b>30.&nbsp;September&nbsp;2026</b>';
     }
 
     function handleFile(file) {

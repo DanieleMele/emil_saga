@@ -1,7 +1,7 @@
 import { put } from '@vercel/blob';
 
-// Submission deadline (Einsendeschluss): end of 31 August 2026, Swiss time.
-const DEADLINE = new Date('2026-08-31T23:59:59+02:00');
+// Submission deadline (Einsendeschluss): end of 30 September 2026, Swiss time.
+const DEADLINE = new Date('2026-09-30T23:59:59+02:00');
 
 // Resolve the Blob token even if the connected store added it under a custom
 // prefix (e.g. MYSTORE_READ_WRITE_TOKEN) instead of BLOB_READ_WRITE_TOKEN.
@@ -21,7 +21,7 @@ export default async function handler(req, res) {
   }
 
   if (Date.now() > DEADLINE.getTime()) {
-    return res.status(403).json({ error: 'Die Einsendephase ist beendet (Einsendeschluss: 31. August 2026).' });
+    return res.status(403).json({ error: 'Die Einsendephase ist beendet (Einsendeschluss: 30. September 2026).' });
   }
 
   try {
