@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <link rel="icon" type="image/png" sizes="48x48" href="/book/favicon-48.png" />
+  <title>Admin – Einsendungen | Emil Saga</title>
+  <style>html{background:#060d0b}</style>
+  <link rel="stylesheet" href="/fonts/extra.css" media="print" onload="this.media='all'" />
+  <noscript><link rel="stylesheet" href="/fonts/extra.css" /></noscript>
+  <style>
+    :root{--gold:#c9a84c;--gold-light:#e8c96a;--gold-dim:#8a6e2e;--dark-0:#060d0b;--dark-1:#0a1410;--dark-2:#0f1e18;--text-main:#e2d9c8;--text-muted:#9a9080;--ember:#c85a20}
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{background:var(--dark-0);color:var(--text-main);font-family:'Crimson Text',Georgia,serif;font-size:17px;line-height:1.6;min-height:100vh}
+    a{color:var(--gold-dim)}
+    .wrap{max-width:1080px;margin:0 auto;padding:2.5rem 1.5rem 5rem}
+    h1{font-family:'Cinzel',Georgia,serif;font-size:1.6rem;color:var(--gold-light);letter-spacing:.02em;margin-bottom:.3rem}
+    .sub{color:var(--text-muted);font-size:.95rem;margin-bottom:2rem}
+
+    /* login */
+    .login{max-width:380px;margin:18vh auto 0;padding:2.25rem 1.75rem;border:1px solid rgba(201,168,76,.2);border-radius:4px;background:rgba(255,255,255,.02);text-align:center}
+    .login h1{margin-bottom:1.5rem}
+    .login input{width:100%;background:rgba(201,168,76,.04);border:1px solid rgba(201,168,76,.22);border-radius:4px;padding:.8rem 1rem;font-family:inherit;font-size:1.05rem;color:var(--text-main);margin-bottom:1rem;outline:0}
+    .login input:focus{border-color:var(--gold);box-shadow:0 0 8px rgba(201,168,76,.2)}
+    .login .err{color:#e8a07a;font-size:.9rem;min-height:1.2em;margin-bottom:.5rem}
+
+    .btn{font-family:'Cinzel',Georgia,serif;font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;border:none;border-radius:2px;cursor:pointer;padding:.6rem 1.1rem;transition:transform .15s,box-shadow .2s,background .2s,border-color .2s}
+    .btn:active{transform:scale(.97)}
+    .btn:focus-visible{outline:2px solid var(--gold-light);outline-offset:2px}
+    .btn-gold{color:var(--dark-0);background:linear-gradient(135deg,var(--gold-light),var(--gold));box-shadow:0 3px 14px rgba(201,168,76,.28)}
+    .btn-gold:hover{box-shadow:0 6px 22px rgba(201,168,76,.42)}
+    .btn-ghost{color:var(--gold);background:0 0;border:1px solid rgba(201,168,76,.35)}
+    .btn-ghost:hover{background:rgba(201,168,76,.1)}
+    .btn-danger{color:#e8a07a;background:0 0;border:1px solid rgba(200,90,32,.4)}
+    .btn-danger:hover{background:rgba(200,90,32,.12)}
+    .btn-block{display:block;width:100%;padding:.85rem}
+
+    .toolbar{display:flex;flex-wrap:wrap;align-items:center;gap:.75rem;margin-bottom:2rem;padding-bottom:1.5rem;border-bottom:1px solid rgba(201,168,76,.12)}
+    .toolbar .spacer{flex:1}
+    .stat{font-family:'Cinzel',Georgia,serif;font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--text-muted)}
+    .stat b{color:var(--gold-light)}
+
+    .group-title{font-family:'Cinzel',Georgia,serif;font-size:.85rem;letter-spacing:.15em;text-transform:uppercase;color:var(--gold-dim);margin:2.5rem 0 1rem;display:flex;align-items:center;gap:.6rem}
+    .group-title::after{content:'';flex:1;height:1px;background:linear-gradient(to right,rgba(201,168,76,.25),transparent)}
+
+    .cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:1.25rem}
+    .card{border:1px solid rgba(201,168,76,.15);border-radius:4px;overflow:hidden;background:rgba(255,255,255,.02);display:flex;flex-direction:column}
+    .card.winner{border-color:rgba(201,168,76,.6);box-shadow:0 0 0 1px rgba(201,168,76,.35),0 0 30px rgba(201,168,76,.15)}
+    .card-img{position:relative;aspect-ratio:3/4;background:var(--dark-2)}
+    .card-img img{width:100%;height:100%;object-fit:cover;display:block}
+    .badge{position:absolute;top:.5rem;left:.5rem;font-family:'Cinzel',Georgia,serif;font-size:.58rem;letter-spacing:.12em;text-transform:uppercase;padding:.3em .6em;border-radius:2px}
+    .badge-win{color:var(--dark-0);background:linear-gradient(135deg,var(--gold-light),var(--gold))}
+    .card-body{padding:.85rem;display:flex;flex-direction:column;gap:.6rem;flex:1}
+    .card-name{font-family:'Cinzel',Georgia,serif;font-size:.95rem;color:var(--gold-light)}
+    .card-date{font-size:.78rem;color:var(--text-muted);opacity:.75}
+    .card-actions{display:flex;gap:.5rem;margin-top:auto}
+    .card-actions .btn{flex:1;text-align:center;font-size:.66rem;padding:.5rem .4rem}
+
+    .empty{color:var(--text-muted);font-style:italic;opacity:.75;padding:1rem 0}
+    .msg{position:fixed;left:50%;bottom:1.5rem;transform:translateX(-50%);background:rgba(15,30,24,.97);border:1px solid rgba(201,168,76,.35);color:var(--gold-light);padding:.8rem 1.4rem;border-radius:3px;font-size:.9rem;box-shadow:0 10px 40px rgba(0,0,0,.6);opacity:0;pointer-events:none;transition:opacity .3s,transform .3s}
+    .msg.show{opacity:1;transform:translateX(-50%) translateY(-4px)}
+    .hidden{display:none!important}
+  </style>
+</head>
+<body>
+
+  <!-- LOGIN -->
+  <div class="login" id="login">
+    <h1>Admin-Zugang</h1>
+    <div class="err" id="login-err"></div>
+    <input type="password" id="login-pass" placeholder="Passwort" autocomplete="current-password" />
+    <button class="btn btn-gold btn-block" id="login-btn">Anmelden</button>
+  </div>
+
+  <!-- DASHBOARD -->
+  <div class="wrap hidden" id="dash">
+    <h1>Einsendungen</h1>
+    <p class="sub">Foto-Verlosung für Band&nbsp;II · prüfe Einsendungen, gib sie frei und lose den Gewinner aus.</p>
+
+    <div class="toolbar">
+      <span class="stat">Wartend: <b id="stat-pending">0</b></span>
+      <span class="stat">Freigegeben: <b id="stat-approved">0</b></span>
+      <span class="spacer"></span>
+      <button class="btn btn-ghost" id="refresh-btn">Aktualisieren</button>
+      <button class="btn btn-gold" id="draw-btn">🎲 Gewinner auslosen</button>
+      <button class="btn btn-danger hidden" id="clear-win-btn">Gewinner zurücksetzen</button>
+    </div>
+
+    <div id="pending-section">
+      <div class="group-title">Wartend auf Freigabe</div>
+      <div class="cards" id="pending-cards"></div>
+      <p class="empty hidden" id="pending-empty">Keine wartenden Einsendungen.</p>
+    </div>
+
+    <div id="approved-section">
+      <div class="group-title">Freigegeben</div>
+      <div class="cards" id="approved-cards"></div>
+      <p class="empty hidden" id="approved-empty">Noch nichts freigegeben.</p>
+    </div>
+  </div>
+
+  <div class="msg" id="msg"></div>
+
+  <script>
+    const KEY_STORAGE = 'emil_admin_key';
+    let adminKey = sessionStorage.getItem(KEY_STORAGE) || '';
+
+    const loginEl = document.getElementById('login');
+    const dashEl = document.getElementById('dash');
+    const loginErr = document.getElementById('login-err');
+    const msgEl = document.getElementById('msg');
+    let msgTimer;
+
+    function toast(text) {
+      msgEl.textContent = text;
+      msgEl.classList.add('show');
+      clearTimeout(msgTimer);
+      msgTimer = setTimeout(() => msgEl.classList.remove('show'), 2600);
+    }
+    function escapeHtml(s) { const d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
+    function fmtDate(iso) { try { return new Date(iso).toLocaleString('de-CH', { dateStyle: 'medium', timeStyle: 'short' }); } catch { return ''; } }
+
+    async function api(method, body) {
+      const res = await fetch('/api/admin', {
+        method,
+        headers: { 'x-admin-key': adminKey, ...(body ? { 'Content-Type': 'application/json' } : {}) },
+        body: body ? JSON.stringify(body) : undefined,
+      });
+      if (res.status === 401) { throw new Error('unauthorized'); }
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error(data.error || 'Fehler');
+      return data;
+    }
+
+    function cardHtml(e) {
+      const win = e.winner;
+      return `
+        <div class="card${win ? ' winner' : ''}">
+          <div class="card-img">
+            ${win ? '<span class="badge badge-win">★ Gewinner</span>' : ''}
+            <img loading="lazy" src="${escapeHtml(e.photoUrl)}" alt="${escapeHtml(e.name)}" />
+          </div>
+          <div class="card-body">
+            <div class="card-name">${escapeHtml(e.name)}</div>
+            <div class="card-date">${fmtDate(e.createdAt)}</div>
+            <div class="card-actions">
+              ${e.status === 'pending'
+                ? `<button class="btn btn-gold" data-action="approve" data-id="${e.id}">Freigeben</button>
+                   <button class="btn btn-danger" data-action="reject" data-id="${e.id}">Ablehnen</button>`
+                : `<button class="btn btn-danger" data-action="reject" data-id="${e.id}">Entfernen</button>`}
+            </div>
+          </div>
+        </div>`;
+    }
+
+    async function load() {
+      let data;
+      try { data = await api('GET'); }
+      catch (err) {
+        if (err.message === 'unauthorized') { logout('Sitzung abgelaufen oder Passwort falsch.'); return; }
+        toast(err.message); return;
+      }
+      const entries = data.entries || [];
+      const pending = entries.filter((e) => e.status === 'pending');
+      const approved = entries.filter((e) => e.status === 'approved');
+      const hasWinner = approved.some((e) => e.winner);
+
+      document.getElementById('stat-pending').textContent = pending.length;
+      document.getElementById('stat-approved').textContent = approved.length;
+      document.getElementById('clear-win-btn').classList.toggle('hidden', !hasWinner);
+
+      const pc = document.getElementById('pending-cards');
+      pc.innerHTML = pending.map(cardHtml).join('');
+      document.getElementById('pending-empty').classList.toggle('hidden', pending.length > 0);
+
+      const ac = document.getElementById('approved-cards');
+      ac.innerHTML = approved.map(cardHtml).join('');
+      document.getElementById('approved-empty').classList.toggle('hidden', approved.length > 0);
+    }
+
+    function showDash() { loginEl.classList.add('hidden'); dashEl.classList.remove('hidden'); load(); }
+    function logout(reason) {
+      adminKey = '';
+      sessionStorage.removeItem(KEY_STORAGE);
+      dashEl.classList.add('hidden');
+      loginEl.classList.remove('hidden');
+      loginErr.textContent = reason || '';
+    }
+
+    // login
+    const passInput = document.getElementById('login-pass');
+    async function tryLogin() {
+      adminKey = passInput.value;
+      loginErr.textContent = '';
+      try {
+        await api('GET');
+        sessionStorage.setItem(KEY_STORAGE, adminKey);
+        showDash();
+      } catch (err) {
+        adminKey = '';
+        loginErr.textContent = err.message === 'unauthorized' ? 'Falsches Passwort.' : 'Verbindungsfehler.';
+      }
+    }
+    document.getElementById('login-btn').addEventListener('click', tryLogin);
+    passInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') tryLogin(); });
+
+    // actions (event delegation)
+    dashEl.addEventListener('click', async (e) => {
+      const btn = e.target.closest('button[data-action]');
+      if (!btn) return;
+      const action = btn.dataset.action;
+      const id = btn.dataset.id;
+      if (action === 'reject' && !confirm('Diese Einsendung wird gelöscht. Fortfahren?')) return;
+      btn.disabled = true;
+      try {
+        await api('POST', { action, id });
+        toast(action === 'approve' ? 'Freigegeben.' : 'Entfernt.');
+        await load();
+      } catch (err) { toast(err.message); btn.disabled = false; }
+    });
+
+    document.getElementById('refresh-btn').addEventListener('click', load);
+
+    document.getElementById('draw-btn').addEventListener('click', async () => {
+      if (!confirm('Zufällig einen Gewinner unter allen freigegebenen Einsendungen auslosen?')) return;
+      try {
+        const data = await api('POST', { action: 'draw' });
+        toast('🎉 Gewinner: ' + (data.winner ? data.winner.name : ''));
+        await load();
+      } catch (err) { toast(err.message); }
+    });
+
+    document.getElementById('clear-win-btn').addEventListener('click', async () => {
+      if (!confirm('Aktuellen Gewinner zurücksetzen?')) return;
+      try { await api('POST', { action: 'clearWinner' }); toast('Gewinner zurückgesetzt.'); await load(); }
+      catch (err) { toast(err.message); }
+    });
+
+    // auto-login if key already stored
+    if (adminKey) { api('GET').then(showDash).catch(() => logout()); }
+  </script>
+</body>
+</html>
