@@ -82,6 +82,6 @@ export default async function handler(req, res) {
     return res.status(200).json({ ok: true });
   } catch (err) {
     console.error('submit error:', err);
-    return res.status(500).json({ error: 'Serverfehler. Bitte versuche es später erneut.', detail: String((err && err.message) || err) });
+    return res.status(500).json({ error: 'Serverfehler. Bitte versuche es später erneut.' });
   }
 }

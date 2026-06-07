@@ -41,6 +41,6 @@ export default async function handler(req, res) {
     return res.status(200).json({ entries });
   } catch (err) {
     console.error('gallery error:', err);
-    return res.status(500).json({ error: 'Serverfehler', detail: String((err && err.message) || err) });
+    return res.status(500).json({ error: 'Serverfehler' });
   }
 }

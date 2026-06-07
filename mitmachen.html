@@ -464,7 +464,7 @@
           body: JSON.stringify({ name: nameInput.value.trim(), consent: true, image }),
         });
         const data = await res.json().catch(() => ({}));
-        if (!res.ok) throw new Error((data.error || 'Upload fehlgeschlagen.') + (data.detail ? ' — ' + data.detail : ''));
+        if (!res.ok) throw new Error(data.error || 'Upload fehlgeschlagen.');
         form.style.display = 'none';
         successBox.classList.add('show');
       } catch (err) {
