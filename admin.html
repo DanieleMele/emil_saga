@@ -165,7 +165,10 @@
       }
       const entries = data.entries || [];
       const pending = entries.filter((e) => e.status === 'pending');
-      const approved = entries.filter((e) => e.status === 'approved');
+      // Winner first, then newest first (entries already arrive newest-first).
+      const approved = entries
+        .filter((e) => e.status === 'approved')
+        .sort((a, b) => (b.winner ? 1 : 0) - (a.winner ? 1 : 0));
       const hasWinner = approved.some((e) => e.winner);
 
       document.getElementById('stat-pending').textContent = pending.length;
