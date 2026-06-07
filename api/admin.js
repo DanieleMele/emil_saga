@@ -71,6 +71,27 @@ export default async function handler(req, res) {
         return res.status(200).json({ ok: true });
       }
 
+      if (action === 'setWinner' || action === 'unsetWinner') {
+        if (!id) return res.status(400).json({ error: 'ID fehlt' });
+        const metas = (await Promise.all(blobs.map(readMeta))).filter(Boolean);
+        const target = metas.find((m) => m.id === id);
+        if (!target) return res.status(404).json({ error: 'Eintrag nicht gefunden' });
+        if (action === 'setWinner' && target.status !== 'approved') {
+          return res.status(400).json({ error: 'Nur freigegebene Einsendungen können gewinnen.' });
+        }
+        await Promise.all(
+          metas.map(async (m) => {
+            // setWinner: this entry becomes the sole winner; unsetWinner: only this one is cleared.
+            const desired = action === 'setWinner' ? m.id === id : m.id === id ? false : Boolean(m.winner);
+            if (Boolean(m.winner) !== desired) {
+              m.winner = desired;
+              await put(`meta/${m.id}.json`, JSON.stringify(m), metaPutOpts);
+            }
+          })
+        );
+        return res.status(200).json({ ok: true });
+      }
+
       if (action === 'draw') {
         const metas = (await Promise.all(blobs.map(readMeta))).filter(Boolean);
         const approved = metas.filter((m) => m.status === 'approved');

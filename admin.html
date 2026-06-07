@@ -148,7 +148,10 @@
               ${e.status === 'pending'
                 ? `<button class="btn btn-gold" data-action="approve" data-id="${e.id}">Freigeben</button>
                    <button class="btn btn-danger" data-action="reject" data-id="${e.id}">Ablehnen</button>`
-                : `<button class="btn btn-danger" data-action="reject" data-id="${e.id}">Entfernen</button>`}
+                : `${win
+                     ? `<button class="btn btn-ghost" data-action="unsetWinner" data-id="${e.id}">★ Gewinner entfernen</button>`
+                     : `<button class="btn btn-gold" data-action="setWinner" data-id="${e.id}">Zum Gewinner</button>`}
+                   <button class="btn btn-danger" data-action="reject" data-id="${e.id}">Entfernen</button>`}
             </div>
           </div>
         </div>`;
@@ -213,9 +216,10 @@
       const id = btn.dataset.id;
       if (action === 'reject' && !confirm('Diese Einsendung wird gelöscht. Fortfahren?')) return;
       btn.disabled = true;
+      const labels = { approve: 'Freigegeben.', reject: 'Entfernt.', setWinner: '★ Als Gewinner festgelegt.', unsetWinner: 'Gewinner-Status entfernt.' };
       try {
         await api('POST', { action, id });
-        toast(action === 'approve' ? 'Freigegeben.' : 'Entfernt.');
+        toast(labels[action] || 'Aktualisiert.');
         await load();
       } catch (err) { toast(err.message); btn.disabled = false; }
     });
