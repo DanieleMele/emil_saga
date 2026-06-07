@@ -3,6 +3,14 @@ import { put } from '@vercel/blob';
 // Submission deadline (Einsendeschluss): end of 31 August 2026, Swiss time.
 const DEADLINE = new Date('2026-08-31T23:59:59+02:00');
 
+// Resolve the Blob token even if the connected store added it under a custom
+// prefix (e.g. MYSTORE_READ_WRITE_TOKEN) instead of BLOB_READ_WRITE_TOKEN.
+function blobToken() {
+  if (process.env.BLOB_READ_WRITE_TOKEN) return process.env.BLOB_READ_WRITE_TOKEN;
+  const key = Object.keys(process.env).find((k) => k.endsWith('READ_WRITE_TOKEN'));
+  return key ? process.env[key] : undefined;
+}
+
 // Public endpoint: a reader submits a photo (compressed client-side to a
 // data URL) plus the name they want shown. Stored to Vercel Blob with
 // status "pending" — nothing is shown publicly until the author approves it.
@@ -45,11 +53,13 @@ export default async function handler(req, res) {
     }
 
     const id = `${Date.now()}-${Math.random().toString(36).slice(2, 10)}`;
+    const token = blobToken();
 
     const photo = await put(`entries/${id}.${ext}`, buffer, {
       access: 'public',
       contentType: mime,
       addRandomSuffix: false,
+      token,
     });
 
     const meta = {
@@ -66,6 +76,7 @@ export default async function handler(req, res) {
       contentType: 'application/json',
       addRandomSuffix: false,
       cacheControlMaxAge: 0,
+      token,
     });
 
     return res.status(200).json({ ok: true });

@@ -1,5 +1,11 @@
 import { list } from '@vercel/blob';
 
+function blobToken() {
+  if (process.env.BLOB_READ_WRITE_TOKEN) return process.env.BLOB_READ_WRITE_TOKEN;
+  const key = Object.keys(process.env).find((k) => k.endsWith('READ_WRITE_TOKEN'));
+  return key ? process.env[key] : undefined;
+}
+
 // Public endpoint: returns only APPROVED entries for the gallery wall.
 // Pending / rejected entries are never exposed here.
 export default async function handler(req, res) {
@@ -9,7 +15,7 @@ export default async function handler(req, res) {
   }
 
   try {
-    const { blobs } = await list({ prefix: 'meta/' });
+    const { blobs } = await list({ prefix: 'meta/', token: blobToken() });
 
     const metas = await Promise.all(
       blobs.map(async (b) => {

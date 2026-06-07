@@ -10,6 +10,12 @@ function authorized(req) {
   return Boolean(pass) && key === pass;
 }
 
+function blobToken() {
+  if (process.env.BLOB_READ_WRITE_TOKEN) return process.env.BLOB_READ_WRITE_TOKEN;
+  const key = Object.keys(process.env).find((k) => k.endsWith('READ_WRITE_TOKEN'));
+  return key ? process.env[key] : undefined;
+}
+
 async function readMeta(blob) {
   try {
     const r = await fetch(blob.url, { cache: 'no-store' });
@@ -25,6 +31,7 @@ const metaPutOpts = {
   addRandomSuffix: false,
   allowOverwrite: true,
   cacheControlMaxAge: 0,
+  token: blobToken(),
 };
 
 export default async function handler(req, res) {
@@ -33,7 +40,7 @@ export default async function handler(req, res) {
   }
 
   try {
-    const { blobs } = await list({ prefix: 'meta/' });
+    const { blobs } = await list({ prefix: 'meta/', token: blobToken() });
 
     if (req.method === 'GET') {
       const metas = (await Promise.all(blobs.map(readMeta)))
@@ -54,8 +61,8 @@ export default async function handler(req, res) {
         if (!meta) return res.status(404).json({ error: 'Eintrag nicht lesbar' });
 
         if (action === 'reject') {
-          await del(meta.photoUrl).catch(() => {});
-          await del(metaBlob.url).catch(() => {});
+          await del(meta.photoUrl, { token: blobToken() }).catch(() => {});
+          await del(metaBlob.url, { token: blobToken() }).catch(() => {});
           return res.status(200).json({ ok: true });
         }
 
